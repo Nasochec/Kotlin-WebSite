@@ -1,0 +1,70 @@
+{% extends "./layout.peb" %}
+{%block title %}Добавление книги{% endblock %}
+{% block content %}
+
+<form method="post">
+    <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <label>Название</label>
+            <input name="name" type="text" >
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-6 cell">
+            <label>Автор</label>
+            <input name="author" type="text">
+        </div>
+        <div class="large-6 cell">
+            <label>Жанр</label>
+            <input name="genre" type="text">
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <label>Анотация</label>
+            <textarea name="annotation"></textarea>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <label>Краткое содержангие</label>
+            <textarea name="summary"></textarea>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <label>Текст</label>
+            <textarea name="text"></textarea>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-6 cell">
+            <label>Возрастной рейтинг:</label>
+            <select name="rars">
+                <option value="BABY">0+</option>
+                <option value="CHILD">6+</option>
+                <option value="TEENAGE">12+</option>
+                <option value="YOUNG">16+</option>
+                <option value="ADULT">18+</option>
+            </select>
+        </div>
+        <div class="large-6 cell">
+            <label>Формат:</label>
+            <select name="format">
+                <option value="HARDCOVER">Книга в твёрдом переплёте</option>
+                <option value="PAPERBACK">Книга в мягком переплёте</option>
+                <option value="WEBBOOK">Книга в электронном формате</option>
+                <option value="ARTICLE">Статья в журнале</option>
+                <option value="WEBARTICKLE">Небольшая статья в интернете</option>
+            </select>
+        </div>
+    </div>
+    <input type="submit">
+</form>
+
+
+
+
+
+
+{% endblock %}

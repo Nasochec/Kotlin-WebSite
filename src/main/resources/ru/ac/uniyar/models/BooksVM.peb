@@ -1,0 +1,28 @@
+{% extends "./layout.peb" %}
+{% block title %} Список книг {% endblock %}
+{% block content %}
+<a href="/books/new" class="button">Добавить</a>
+<table>
+    <thead>
+    <tr>
+        <th width="200">Название книги</th>
+        <th width="150">Автор</th>
+        <th width="150">Жанр</th>
+        <th width="150">Рейтинг</th>
+        <th width="150"></th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for book in model.books %}
+        <tr>
+            <td>{{book.value.name}}</td>
+            <td>{{book.value.author}}</td>
+            <td>{{book.value.genre}}</td>
+            <td>{{book.value.rating.string}}</td>
+            <td><a href="/books/{{book.index}}">Подробнее</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="/books/new" class="button">Добавить</a>
+{% endblock %}

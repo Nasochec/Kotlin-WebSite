@@ -1,0 +1,68 @@
+{% extends "./layout.peb" %}
+{% block title %}{{model.book.name}}{% endblock %}
+{% block content %}
+<div>
+    <h1>{{model.bool.name}}</h1>
+    <div class="grid-x grid-padding-x">
+        <div class="large-4 medium-4 cell">
+            <div class="primary callout">
+                <p>Номер книги в хранилище: {{model.number}}</p>
+            </div>
+        </div>
+        <div class="large-8 medium-8 cell">
+            <div class="primary callout">
+                <p>Дата добавления в хранилище: {{model.book.creationDate}}</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="grid-x grid-padding-x">
+        <div class="large-12 cell">
+            <div class="primary callout">
+                <p>Название книги: {{model.book.name}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-8 medium-8 cell">
+            <div class="primary callout">
+                <p>Автор книги: {{model.book.author}}</p>
+            </div>
+        </div>
+        <div class="large-4 medium-4 cell">
+            <div class="primary callout">
+                <p>Возрастой рейтинг: {{model.book.rating.string}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="large-6 medium-6 cell">
+            <div class="primary callout">
+                <p>Жанр: {{model.book.genre}}</p>
+            </div>
+        </div>
+        <div class="large-6 medium-6 cell">
+            <div class="primary callout">
+                <p>Формат книги: {{model.book.format.string}}</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <hr>
+        <div class="callout">
+            <h3>Аннотация</h3>
+            <textarea readonly>{{model.book.annotation}}</textarea>
+        </div>
+        <hr>
+        <div class="callout">
+            <h3>Краткое содержание</h3>
+            <textarea readonly>{{model.book.summary}}</textarea>
+        </div>
+        <hr>
+        <div class="callout">
+            <h3>Текст</h3>
+            <textarea readonly>{{model.book.text}}</textarea>
+        </div>
+    </div>
+</div>
+{% endblock %}
