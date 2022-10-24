@@ -4,5 +4,5 @@ import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.Book
 
 
-data class BookVM(val book: Book, val number: Int) : ViewModel {
+data class BookVM(val book: Book) : ViewModel {
 }

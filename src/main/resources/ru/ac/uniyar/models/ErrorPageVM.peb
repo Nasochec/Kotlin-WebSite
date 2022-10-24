@@ -1,0 +1,13 @@
+{% extends "./layout.peb" %}
+
+{% block title %}
+Ошибочный запрос
+{% endblock %}
+
+{% block content %}
+<br>
+<div class="callout">
+    <h3>Был произведён некорректный запрос по адресу: {{model.errorUri.toString()}}</h3>
+</div>
+{% endblock %}
+
