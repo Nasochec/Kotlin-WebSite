@@ -11,6 +11,11 @@ buildscript {
     }
 }
 
+plugins {
+    id("org.jlleitschuh.gradle.ktlint") version "11.0.0"
+    id "io.gitlab.arturbosch.detekt" version "1.21.0"
+}
+
 apply plugin: 'application'
 
 mainClassName = "ru.ac.uniyar.WebApplicationKt"
@@ -32,6 +37,20 @@ test {
     useJUnitPlatform()
 }
 
+ktlint {
+    version = ktlintVersion
+}
+
+detekt {
+    allRules = true
+    buildUponDefaultConfig = true
+}
+
+run {
+    standardInput = System.in
+}
+
+
 dependencies {
     implementation "org.http4k:http4k-client-okhttp:${http4kVersion}"
     implementation "org.http4k:http4k-core:${http4kVersion}"
@@ -40,7 +59,15 @@ dependencies {
     implementation "org.http4k:http4k-server-undertow:${http4kVersion}"
     implementation "org.http4k:http4k-template-pebble:${http4kVersion}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
+
     testImplementation "org.http4k:http4k-testing-kotest:${http4kVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    implementation group: "com.h2database", name: "h2", version: h2dbVersion
+    implementation group: "org.flywaydb", name: "flyway-core", version: flywayVersion
+    implementation group: "org.ktorm", name: "ktorm-core", version: ktormVersion
+    implementation group: "org.ktorm", name: "ktorm-support-mysql", version: ktormVersion
+    implementation group: "org.slf4j", name: "slf4j-api", version: slf4jversion
+    implementation group: "org.slf4j", name: "slf4j-simple", version: slf4jversion
+
 }

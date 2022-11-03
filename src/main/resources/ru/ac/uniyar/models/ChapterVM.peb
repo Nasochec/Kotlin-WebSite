@@ -1,0 +1,47 @@
+{% extends "./layout.peb" %}
+{% set book = model.book %}
+{% set author = model.author %}
+{% set chapter = model.chapter %}
+{% block title %}{{book.name}}. Глава {{chapter.number}}. {{chapter.name}}{% endblock %}
+{% block content %}
+<a class="button" href="/book/{{book.id}}" >Назад к книге</a>
+<div class="primary callout">
+    <h2>{{book.name}}. Глава {{chapter.number}}. {{chapter.name}}</h2>
+    <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+            <h3>Автор: {{author.name}} (<a href="/author/{{author.id}}">Подробнее</a>)</h3>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+            <p>Дата публикации: {{chapter.creationDateFormatted}}</p>
+        </div>
+    </div>
+</div>
+
+<div>
+{% if model.prevChapterNumber is not null%}
+    <a class="button" href="/chapter/{{book.id}}/{{model.prevChapterNumber}}" ><-</a>
+{% endif %}
+{% if model.nextChapterNumber is not null%}
+    <a class="button" href="/chapter/{{book.id}}/{{model.nextChapterNumber}}" >-></a>
+{% endif %}
+</div>
+
+<div class="callout">
+    <h3>Текст Главы:</h3>
+    {% for paragraph in model.paragraphs %}
+        <p>{{paragraph}}</p>
+    {% endfor %}
+</div>
+
+<div>
+{% if model.prevChapterNumber is not null%}
+<a class="button" href="/chapter/{{book.id}}/{{model.prevChapterNumber}}" ><-</a>
+{% endif %}
+{% if model.nextChapterNumber is not null%}
+<a class="button" href="/chapter/{{book.id}}/{{model.nextChapterNumber}}" >-></a>
+{% endif %}
+</div>
+{% endblock %}
+

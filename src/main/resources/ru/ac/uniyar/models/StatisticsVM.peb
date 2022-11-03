@@ -1,0 +1,32 @@
+{% extends "./layout.peb" %}
+{% block title %}{{model.book.name}}{% endblock %}
+{% block content %}
+<div>
+
+    <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+            <div class="primary callout">
+                <h1>Информация о книге</h1>
+            </div>
+        </div>
+        <div class="medium-12 cell">
+            <div class="primary callout">
+                <p>Название книги: {{model.book.name}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="medium-6 cell">
+            <div class="primary callout">
+                <p>Дата публикации: {{model.book.creationDateFormatted}}</p>
+            </div>
+        </div>
+        <div class="medium-6 cell">
+            <div class="primary callout">
+                <p>Формат книги: {{model.book.format.string}}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

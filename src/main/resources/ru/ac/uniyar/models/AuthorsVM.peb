@@ -1,0 +1,56 @@
+    {% extends "./layout.peb" %}
+        {% block title %} Список авторов {% endblock %}
+    {% block content %}
+
+    <div class="callout">
+        <form method="get">
+            <div class="grid-x grid-padding-x">
+                <div class="medium-6 cell">
+                    <label>Поиск по имени:</label>
+                    <input name="authorName" type="text" value="{{model.authorName}}">
+                </div>
+                <div class="medium-6 cell">
+                        {{ selectFromList("Поиск по жанру:","genreId",model.genres,model.selectedGenre,true) }}
+                </div>
+            </div>
+            <div class="grid-x grid-padding-x">
+                <div class="medium-6 cell">
+                    <input type="submit" class="button" value="Показать">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div>
+        {% if model.currentPage > 1%}
+            <a href="{{model.prevPageUri}}" class="button"><-</a>
+        {% endif %}
+        {% if model.authors is not empty%}
+            <a href="{{model.nextPageUri}}" class="button">-></a>
+        {% endif %}
+        <a href="/author/new" class="button">Добавить</a>
+    </div>
+    {% if model.authors is not empty %}
+    <table>
+        <thead>
+        <tr>
+            <th width="150">Имя</th>
+            <th width="150"></th>
+        </tr>
+        </thead>
+        <tbody>
+                {% for author in model.authors %}
+            <tr>
+                <td>{{author.name}}</td>
+                <td><a href="/author/{{author.id}}">Подробнее</a></td>
+            </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="callout">
+        <p>По запросу ничего не найдено, возможно вы перешли слишком большой номер страницы, либо по указанным
+            параметрам фильтрации ничего не найдено.</p>
+    </div>
+    {% endif %}
+    {% endblock %}

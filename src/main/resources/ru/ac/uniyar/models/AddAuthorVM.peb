@@ -1,0 +1,32 @@
+{% extends "./layout.peb" %}
+{%block title %}Добавление автора{% endblock %}
+{% block content %}
+<h2>Добавление автора</h2>
+{% if model.form.errors is not empty %}
+<div>
+    <h3>Пожалуйста, заполните следующие поля:</h3>
+    {% for error in model.form.errors %}
+    <p>
+        {{error.toString()}}
+    </p>
+    {% endfor %}
+</div>
+{% endif%}
+
+<div class="primary callout">
+    <form method="post">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Имя</label>
+                <input name="name" type="text" value="{{model.name}}">
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <input type="submit" class="button">
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

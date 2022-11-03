@@ -1,0 +1,30 @@
+{% extends "./layout.peb" %}
+{% block title %}{{model.author.name}}{% endblock %}
+{% block content %}
+<h1>Карточка автора</h1>
+<div class="primary callout">
+    <h2>{{model.author.name}}</h2>
+    {% if model.lastActivity is not null %}
+        <p>Последняя Активность: {{model.lastActivityDate}}</p>
+    {% else %}
+        <p>Пока не написал ни одной книги (</p>
+    {% endif %}
+</div>
+{%if model.genres is not empty %}
+<div class="callout">
+    <h3>Пишет в жанрах:</h3>
+    {% for genre in model.genres %}
+        <p>{{genre.name}} (<a href="/genre/{{genre.id}}">Подробнее</a>)</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div>
+<a href="{{model.addBookUri}}" class="button">Добавить книгу</a>
+</div>
+
+<h3>Последние добавленные книги:</h3>
+{{ showBooksList(model.books) }}
+
+<a href="{{model.moreBooksUri}}" class="button">Показать больше</a>
+{% endblock %}

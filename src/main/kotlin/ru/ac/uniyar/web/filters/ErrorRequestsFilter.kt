@@ -8,14 +8,13 @@ import org.http4k.lens.BiDiBodyLens
 import org.http4k.template.ViewModel
 import ru.ac.uniyar.models.ErrorPageVM
 
-fun ErrorRequestFilter(htmlView: BiDiBodyLens<ViewModel>) = Filter { next: HttpHandler ->
+fun errorRequestFilter(htmlView: BiDiBodyLens<ViewModel>) = Filter { next: HttpHandler ->
     { request: Request ->
         val response = next(request)
-        if (response.status.clientError && response.body.length == 0L) {
-            response.with( htmlView of  ErrorPageVM(request.uri) )
+        if (response.status.clientError && response.body.length == 0L || response.status.serverError) {
+            response.with(htmlView of ErrorPageVM(request.uri))
         } else {
             response
         }
     }
-
 }

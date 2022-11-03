@@ -1,68 +1,97 @@
 {% extends "./layout.peb" %}
+{% set book = model.book%}
+{% set author = model.author%}
+{% set genre = model.genre%}
 {% block title %}{{model.book.name}}{% endblock %}
 {% block content %}
 <div>
-    <h1>{{model.bool.name}}</h1>
+
     <div class="grid-x grid-padding-x">
-        <div class="large-4 medium-4 cell">
+        <div class="medium-12 cell">
             <div class="primary callout">
-                <p>Номер книги в хранилище: {{model.number}}</p>
+                <h1>Информация о книге</h1>
             </div>
         </div>
-        <div class="large-8 medium-8 cell">
+        <div class="medium-12 cell">
             <div class="primary callout">
-                <p>Дата добавления в хранилище: {{model.book.creationDate}}</p>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="grid-x grid-padding-x">
-        <div class="large-12 cell">
-            <div class="primary callout">
-                <p>Название книги: {{model.book.name}}</p>
+                <p>Название книги: {{book.name}}</p>
             </div>
         </div>
     </div>
     <div class="grid-x grid-padding-x">
-        <div class="large-8 medium-8 cell">
+        <div class="medium-6 cell">
             <div class="primary callout">
-                <p>Автор книги: {{model.book.author}}</p>
+                <p>Дата публикации: {{book.creationDateFormatted}}</p>
             </div>
         </div>
-        <div class="large-4 medium-4 cell">
+        <div class="medium-6 cell">
             <div class="primary callout">
-                <p>Возрастой рейтинг: {{model.book.rating.string}}</p>
+                <p>Формат книги: {{book.format.string}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-x grid-padding-x">
+        <div class="medium-12  cell ">
+            <div class="primary callout">
+                <p>Автор книги: {{author.name}} (<a href="/author/{{author.id}}">Подробнее</a>)</p>
             </div>
         </div>
     </div>
     <div class="grid-x grid-padding-x">
-        <div class="large-6 medium-6 cell">
+        <div class="medium-8 cell">
             <div class="primary callout">
-                <p>Жанр: {{model.book.genre}}</p>
+                <p>Жанр: {{genre.name}} (<a href="/genre/{{genre.id}}">Подробнее</a>)</p>
             </div>
         </div>
-        <div class="large-6 medium-6 cell">
-            <div class="primary callout">
-                <p>Формат книги: {{model.book.format.string}}</p>
-            </div>
+        <div class="medium-4 cell">
+        <div class="primary callout">
+            <p>Возрастой рейтинг: {{book.rating.string}}</p>
         </div>
+    </div>
     </div>
     <div>
         <hr>
         <div class="callout">
             <h3>Аннотация</h3>
-            <textarea readonly>{{model.book.annotation}}</textarea>
+            {% for item in model.annotationParagraphs %}
+                <p>{{item}}</p>
+            {% endfor %}
         </div>
-        <hr>
-        <div class="callout">
-            <h3>Краткое содержание</h3>
-            <textarea readonly>{{model.book.summary}}</textarea>
+        <div>
+        <a href="{{model.addButtonUri}}" class="button">Добавить</a>
+        {% if model.currentPage > 1%}
+        <a href="{{model.prevPageUri}}" class="button"><-</a>
+        {% endif %}
+        {% if model.chapters is not empty %}
+            <a href="{{model.nextPageUri}}" class="button">-></a>
+        {% endif %}
         </div>
-        <hr>
-        <div class="callout">
-            <h3>Текст</h3>
-            <textarea readonly>{{model.book.text}}</textarea>
-        </div>
+        {% if model.chapters is not empty %}
+            <h3>Главы:</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th width="300">Номер</th>
+                    <th width="150">Дата публикации</th>
+                    <th width="150"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for chapter in model.chapters %}
+                <tr>
+                    <td>{{chapter.number}}. {{chapter.name}}</td>
+                    <td>{{chapter.creationDateFormatted}}</td>
+                    <td><a href="/chapter/{{model.book.id}}/{{chapter.number}}">Подробнее</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="callout">
+                <p>По запросу ничего не найдено, возможно вы перешли слишком большой номер страницы, либо по указанным параметрам фильтрации ничего не найдено.</p>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

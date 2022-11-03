@@ -1,0 +1,51 @@
+{% extends "./layout.peb" %}
+
+{%block title %}Добавление главы{% endblock %}
+{% block content %}
+<h2>Добавление главы</h2>
+{% if model.form.errors is not empty %}
+<div>
+    <h3>Пожалуйста, заполните следующие поля:</h3>
+    {% for error in model.form.errors %}
+    <p>
+        {{error.toString()}}
+    </p>
+    {% endfor %}
+</div>
+{% endif%}
+
+<div class="primary callout">
+    <form method="post">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                {% if model.book is null %}
+                    {{ selectFromList("Выберите книгу:","book",model.books,model.selectedBookId) }}
+                {% else %}
+                    {{ selectFromList("Выберите книгу:","book",model.books,model.book) }}
+                {% endif %}
+            </div>
+            <div class="medium-6 cell">
+                <label>Номер главы:</label>
+                <input name="number" type="number" value="{{model.number}}">
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Название</label>
+                <input name="name" type="text" value="{{model.name}}">
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Текст:</label>
+                <textarea name="text">{{model.text}}</textarea>
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <input type="submit" class="button">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+INSERT INTO GENRE(name) VALUES('Psydelic');
+INSERT INTO GENRE(name) VALUES('Реп');
+INSERT INTO GENRE(name) VALUES('Фантастика');
+INSERT INTO GENRE(name) VALUES('Учебное пособие');
+INSERT INTO GENRE(name) VALUES('Классика');
+INSERT INTO GENRE(name) VALUES('Приключения');
+INSERT INTO GENRE(name) VALUES('Психология');
+INSERT INTO GENRE(name) VALUES('Исторический роман');
+INSERT INTO GENRE(name) VALUES('Любовный роман');
+INSERT INTO GENRE(name) VALUES('Философия. Религия. Эзотерика.');
+INSERT INTO GENRE(name) VALUES('Биография');
+INSERT INTO GENRE(name) VALUES('Триллер');
+INSERT INTO GENRE(name) VALUES('Нон-фикшен');
