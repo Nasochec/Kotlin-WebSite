@@ -1,13 +1,14 @@
 {% extends "./layout.peb" %}
 {% block title %}{{model.author.name}}{% endblock %}
 {% block content %}
+<a class="button" href="/authors" >К списку авторов</a>
 <h1>Карточка автора</h1>
 <div class="primary callout">
     <h2>{{model.author.name}}</h2>
     {% if model.lastActivity is not null %}
         <p>Последняя Активность: {{model.lastActivityDate}}</p>
     {% else %}
-        <p>Пока не написал ни одной книги (</p>
+        <p>Пока не написал ни одной главы (</p>
     {% endif %}
 </div>
 {%if model.genres is not empty %}
@@ -24,7 +25,13 @@
 </div>
 
 <h3>Последние добавленные книги:</h3>
+{% if model.books is not empty %}
 {{ showBooksList(model.books) }}
+{% else %}
+<div class="callout">
+    <p>Этот автор пока не добавил ни одной книги.</p>
+</div>
+{% endif %}
 
 <a href="{{model.moreBooksUri}}" class="button">Показать больше</a>
 {% endblock %}

@@ -1,7 +1,9 @@
     {% extends "./layout.peb" %}
         {% block title %} Список книг {% endblock %}
     {% block content %}
-
+    <div class="callout">
+        <h1>Список книг</h1>
+    </div>
     <div class="callout">
         <form method="get">
             <div class="grid-x grid-padding-x">

@@ -20,5 +20,5 @@ data class BookVM(
     val nextPageUri = currentPageUri.removeQuery("page").query("page", (currentPage + 1).toString()).toString()
     val prevPageUri = currentPageUri.removeQuery("page").query("page", (currentPage - 1).toString()).toString()
     val addButtonUri = "/chapter/new?bookId=${book.id}"
-    val annotationParagraphs = book.annotation.split("\n")
+    val annotationParagraphs = book.annotation.split("\\n","\n")
 }

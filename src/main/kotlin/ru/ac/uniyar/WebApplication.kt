@@ -10,6 +10,8 @@ import ru.ac.uniyar.domain.db.performMigrations
 import ru.ac.uniyar.web.lens.HTMLView
 import ru.ac.uniyar.web.routers.app
 
+const val PORT_NUMBER = 9000
+
 fun main() {
     val h2DatabaseManager = H2DatabaseManager().initialize()
     try {
@@ -20,9 +22,9 @@ fun main() {
         return
     }
     val database = connectToDatabase()
-    val operationHolder: OperationHolder = OperationHolder(database)
+    val operationHolder = OperationHolder(database)
 
-    val server = app(operationHolder, HTMLView).asServer(Undertow(9000)).start()
+    val server = app(operationHolder, HTMLView).asServer(Undertow(PORT_NUMBER)).start()
     println("Сервер доступен по адресу http://localhost:" + server.port())
     println("Веб-интерфейс базы данных доступен по адресу http://localhost:${H2DatabaseManager.WEB_PORT}")
     println("Введите любую строку, чтобы завершить работу приложения")

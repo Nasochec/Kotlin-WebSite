@@ -5,7 +5,7 @@
 {% block title %}{{model.book.name}}{% endblock %}
 {% block content %}
 <div>
-
+    <a class="button" href="/books" >К списку книг</a>
     <div class="grid-x grid-padding-x">
         <div class="medium-12 cell">
             <div class="primary callout">
@@ -45,10 +45,10 @@
             </div>
         </div>
         <div class="medium-4 cell">
-        <div class="primary callout">
-            <p>Возрастой рейтинг: {{book.rating.string}}</p>
+            <div class="primary callout">
+                <p>Возрастой рейтинг: {{book.rating.string}}</p>
+            </div>
         </div>
-    </div>
     </div>
     <div>
         <hr>
@@ -59,7 +59,7 @@
             {% endfor %}
         </div>
         <div>
-        <a href="{{model.addButtonUri}}" class="button">Добавить</a>
+        <a href="{{model.addButtonUri}}" class="button">Добавить главу</a>
         {% if model.currentPage > 1%}
         <a href="{{model.prevPageUri}}" class="button"><-</a>
         {% endif %}

@@ -37,7 +37,7 @@ data class Book(
     }
 }
 
-// Возрастной рейтинг книги
+/** Возрастной рейтинг книги **/
 enum class Rars(val string: String) {
     BABY("0+"),
     CHILD("6+"),
@@ -46,7 +46,7 @@ enum class Rars(val string: String) {
     ADULT("18+")
 }
 
-// Формат книги
+/** Формат книги **/
 enum class BookFormat(val string: String) {
     HARDCOVER("Книга в твёрдом переплёте"),
     PAPERBACK("Книга в мягком переплёте"),

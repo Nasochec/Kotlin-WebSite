@@ -1,7 +1,9 @@
     {% extends "./layout.peb" %}
         {% block title %} Список авторов {% endblock %}
     {% block content %}
-
+    <div class="callout">
+        <h1>Список авторов</h1>
+    </div>
     <div class="callout">
         <form method="get">
             <div class="grid-x grid-padding-x">
@@ -10,7 +12,7 @@
                     <input name="authorName" type="text" value="{{model.authorName}}">
                 </div>
                 <div class="medium-6 cell">
-                        {{ selectFromList("Поиск по жанру:","genreId",model.genres,model.selectedGenre,true) }}
+                        {{ selectFromList("Пишет в жанре:","genreId",model.genres,model.selectedGenre,true) }}
                 </div>
             </div>
             <div class="grid-x grid-padding-x">

@@ -8,7 +8,13 @@
 
 
 <h3>Книги в этом жанре:</h3>
-{{ showBooksList(model.books) }}
+{% if model.books is not empty%}
+    {{ showBooksList(model.books) }}
+{% else %}
+<div class="callout">
+    <p>В этом жанре пока нет ни одной книги.</p>
+</div>
+{% endif %}
 
 <a href="{{model.moreBooksUri}}" class="button">Показать больше</a>
 {% endblock %}

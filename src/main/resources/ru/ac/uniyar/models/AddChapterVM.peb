@@ -3,16 +3,7 @@
 {%block title %}Добавление главы{% endblock %}
 {% block content %}
 <h2>Добавление главы</h2>
-{% if model.form.errors is not empty %}
-<div>
-    <h3>Пожалуйста, заполните следующие поля:</h3>
-    {% for error in model.form.errors %}
-    <p>
-        {{error.toString()}}
-    </p>
-    {% endfor %}
-</div>
-{% endif%}
+{{ showErrors(model.form.errors,model.errors) }}
 
 <div class="primary callout">
     <form method="post">
@@ -31,7 +22,7 @@
         </div>
         <div class="grid-x grid-padding-x">
             <div class="medium-12 cell">
-                <label>Название</label>
+                <label>Название (необязательное)</label>
                 <input name="name" type="text" value="{{model.name}}">
             </div>
         </div>

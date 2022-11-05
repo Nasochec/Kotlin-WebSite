@@ -5,7 +5,7 @@ import org.ktorm.dsl.from
 import org.ktorm.dsl.select
 import ru.ac.uniyar.domain.db.tables.ChapterTable
 
-class CountChapters (
+class CountChapters(
     private val database: Database
 ) {
     fun count(): Int =

@@ -1,32 +1,50 @@
 {% extends "./layout.peb" %}
-{% block title %}{{model.book.name}}{% endblock %}
+{% block title %}Статистика{% endblock %}
 {% block content %}
+{% macro showInfoPair(label1,label2,data)%}
+<div class="grid-x grid-padding-x">
+    <div class="medium-8 cell">
+        <div class="primary callout">
+            <p>{{label1}}: {{data.first}}</p>
+        </div>
+    </div>
+    <div class="medium-4 cell">
+        <div class="primary callout">
+            <p>{{label2}}: {{data.second}}</p>
+        </div>
+    </div>
+</div>
+{% endmacro %}
 <div>
+    <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+            <div class="primary callout">
+                <h1>Статистика</h1>
+            </div>
+        </div>
+        <div class="medium-12 cell">
+            <div class="primary callout">
+                <p>Добавлено книг: {{model.booksNumber}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="grid-x grid-padding-x">
+        <div class="medium-6 cell">
+            <div class="primary callout">
+                <p>Добавлено авторов: {{model.authorsNumber}}</p>
+            </div>
+        </div>
+        <div class="medium-6 cell">
+            <div class="primary callout">
+                <p>Добавлено глав: {{model.chaptersNumber}}</p>
+            </div>
+        </div>
+    </div>
+    {{ showInfoPair("Автор, написавший самое большое количество книг","Написал книг",model.authorWMB) }}
+    {{ showInfoPair("Автор, написавший самое большое количество глав","Написал глав",model.authorWMC) }}
+    {{ showInfoPair("Книга с наибольшим количеством глав","Количество глав",model.bookWMC) }}
+    {{ showInfoPair("Жанр в которм написано наибольшее количесто книг","Книг",model.genreWMB) }}
 
-    <div class="grid-x grid-padding-x">
-        <div class="medium-12 cell">
-            <div class="primary callout">
-                <h1>Информация о книге</h1>
-            </div>
-        </div>
-        <div class="medium-12 cell">
-            <div class="primary callout">
-                <p>Название книги: {{model.book.name}}</p>
-            </div>
-        </div>
-    </div>
-    <div class="grid-x grid-padding-x">
-        <div class="medium-6 cell">
-            <div class="primary callout">
-                <p>Дата публикации: {{model.book.creationDateFormatted}}</p>
-            </div>
-        </div>
-        <div class="medium-6 cell">
-            <div class="primary callout">
-                <p>Формат книги: {{model.book.format.string}}</p>
-            </div>
-        </div>
-    </div>
 
 </div>
 {% endblock %}

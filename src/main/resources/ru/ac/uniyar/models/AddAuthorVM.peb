@@ -2,16 +2,7 @@
 {%block title %}Добавление автора{% endblock %}
 {% block content %}
 <h2>Добавление автора</h2>
-{% if model.form.errors is not empty %}
-<div>
-    <h3>Пожалуйста, заполните следующие поля:</h3>
-    {% for error in model.form.errors %}
-    <p>
-        {{error.toString()}}
-    </p>
-    {% endfor %}
-</div>
-{% endif%}
+{{ showErrors(model.form.errors) }}
 
 <div class="primary callout">
     <form method="post">

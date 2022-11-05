@@ -9,6 +9,7 @@ import ru.ac.uniyar.domain.Rars
 
 data class AddBookVM(
     val form: WebForm = WebForm(),
+    val errors: List<String>,
     val authors: List<Author>,
     val genres: List<Genre>,
     val selectedAuthorId: Int?

@@ -59,7 +59,6 @@ dependencies {
     implementation "org.http4k:http4k-server-undertow:${http4kVersion}"
     implementation "org.http4k:http4k-template-pebble:${http4kVersion}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
-
     testImplementation "org.http4k:http4k-testing-kotest:${http4kVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"

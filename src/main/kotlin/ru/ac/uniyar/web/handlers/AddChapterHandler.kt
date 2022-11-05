@@ -1,7 +1,19 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
-import org.http4k.lens.*
+import org.http4k.core.Body
+import org.http4k.core.HttpHandler
+import org.http4k.core.Response
+import org.http4k.core.Status
+import org.http4k.core.with
+import org.http4k.lens.BiDiBodyLens
+import org.http4k.lens.FormField
+import org.http4k.lens.LensFailure
+import org.http4k.lens.Validator
+import org.http4k.lens.WebForm
+import org.http4k.lens.int
+import org.http4k.lens.nonEmptyString
+import org.http4k.lens.string
+import org.http4k.lens.webForm
 import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.db.OperationHolder
 import ru.ac.uniyar.models.AddChapterVM
@@ -10,11 +22,12 @@ import ru.ac.uniyar.web.lens.bookIdLens
 fun addNewChapter(
     htmlView: BiDiBodyLens<ViewModel>,
     operationHolder: OperationHolder,
-    form: WebForm = WebForm()
+    form: WebForm = WebForm(),
+    errors: List<String> = listOf()
 ): HttpHandler = { request ->
     val bookId = bookIdLens(request)
     val books = operationHolder.getBooks.listAll()
-    Response(Status.OK).with(htmlView of AddChapterVM(form, books, bookId))
+    Response(Status.OK).with(htmlView of AddChapterVM(form, errors, books, bookId))
 }
 
 fun addChapter(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder): HttpHandler = handler@{ request ->
@@ -32,12 +45,20 @@ fun addChapter(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHold
     val form = formLens(request)
     try {
         if (form.errors.isEmpty()) {
-            //TODO show errors
+            val errors = mutableListOf<String>()
             if (operationHolder.getBook.get(bookLens(form)) == null)
-                return@handler Response(Status.BAD_REQUEST).body("Указана неверная книга, такой книги не существует!")
+                errors.add(
+                    "Выбрана некорректная книга. Либо список книг пуст, перед добавлением главы," +
+                        " добавьте книгу. Либо код страницы был повреждён, перезагрузите страницу."
+                )
             if (operationHolder.getChapter.get(bookLens(form), numberLens(form)) != null)
-                return@handler Response(Status.BAD_REQUEST)
-                    .body("Указан неверный номер главы. Глава с таким номером а данной книге уже существует!")
+                errors.add(
+                    "Введён некорректный номер главы, глава с таким номером уже существует." +
+                        " Попробуйте ввести другой номер главы." +
+                        " На странице подробной информации о книге можно увидеть занятые номера глав."
+                )
+            if (errors.isNotEmpty())
+                return@handler addNewChapter(htmlView, operationHolder, form, errors).invoke(request)
             operationHolder.addChapter.insert(
                 bookLens(form),
                 numberLens(form),

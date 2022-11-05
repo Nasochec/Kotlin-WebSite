@@ -21,7 +21,7 @@ fun showChapter(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHol
         val book = operationHolder.getBook.get(chapter.bookId)!!
         val author = operationHolder.getAuthor.get(book.authorId)!!
         // для нахождения номера следующей и предыдущей главы сделаны отдельные запросы,
-        // поскольку главы могут быть добавлены фрагментами
+        // поскольку главы могут быть добавлены фрагментами(к примеру есть 1 и 4 главы, а 2 и 3 - нет)
         val nextChapterNumber = operationHolder.getNextChapterNumber.get(chapter.bookId, chapter.number)
         val prevChapterNumber = operationHolder.getPrevChapterNumber.get(chapter.bookId, chapter.number)
         val viewModel = ChapterVM(chapter, book, author, nextChapterNumber, prevChapterNumber)

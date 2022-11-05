@@ -11,40 +11,46 @@ import org.http4k.routing.static
 import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.db.OperationHolder
 import ru.ac.uniyar.web.filters.errorRequestFilter
-import ru.ac.uniyar.web.handlers.*
+import ru.ac.uniyar.web.handlers.addAuthor
+import ru.ac.uniyar.web.handlers.addBook
+import ru.ac.uniyar.web.handlers.addChapter
+import ru.ac.uniyar.web.handlers.addNewAuthor
+import ru.ac.uniyar.web.handlers.addNewBook
+import ru.ac.uniyar.web.handlers.addNewChapter
+import ru.ac.uniyar.web.handlers.ping
+import ru.ac.uniyar.web.handlers.showAuthor
+import ru.ac.uniyar.web.handlers.showAuthors
+import ru.ac.uniyar.web.handlers.showBook
+import ru.ac.uniyar.web.handlers.showBooks
+import ru.ac.uniyar.web.handlers.showChapter
+import ru.ac.uniyar.web.handlers.showGenre
+import ru.ac.uniyar.web.handlers.showMainPage
+import ru.ac.uniyar.web.handlers.showStatistics
 
 fun app(operationHolder: OperationHolder, htmlView: BiDiBodyLens<ViewModel>): HttpHandler =
     errorRequestFilter(htmlView).then(
         routes(
-            "/ping" bind Method.GET to ping(),
-
             "/" bind Method.GET to showMainPage(htmlView),
 
-            "/statistics" bind Method.GET to showStatistics(htmlView,operationHolder),
+            "/ping" bind Method.GET to ping(),
 
-            "/author/new" bind Method.GET to addNewAuthor(htmlView),
-
-            "/author/new" bind Method.POST to addAuthor(htmlView, operationHolder),
-
-            "/author/{index}" bind Method.GET to showAuthor(htmlView, operationHolder),
+            "/statistics" bind Method.GET to showStatistics(htmlView, operationHolder),
 
             "/authors" bind Method.GET to showAuthors(htmlView, operationHolder),
+            "/author/new" bind Method.GET to addNewAuthor(htmlView),
+            "/author/new" bind Method.POST to addAuthor(htmlView, operationHolder),
 
             "/books" bind Method.GET to showBooks(htmlView, operationHolder),
-
             "/book/new" bind Method.GET to addNewBook(htmlView, operationHolder),
-
             "/book/new" bind Method.POST to addBook(htmlView, operationHolder),
 
-            "/book/{index}" bind Method.GET to showBook(htmlView, operationHolder),
-
-            "/genre/{index}" bind Method.GET to showGenre(htmlView, operationHolder),
-
             "/chapter/new" bind Method.GET to addNewChapter(htmlView, operationHolder),
-
             "/chapter/new" bind Method.POST to addChapter(htmlView, operationHolder),
 
+            "/author/{index}" bind Method.GET to showAuthor(htmlView, operationHolder),
+            "/book/{index}" bind Method.GET to showBook(htmlView, operationHolder),
             "/chapter/{bookId}/{id}" bind Method.GET to showChapter(htmlView, operationHolder),
+            "/genre/{index}" bind Method.GET to showGenre(htmlView, operationHolder),
 
             static(ResourceLoader.Classpath("/ru/ac/uniyar/public"))
         )

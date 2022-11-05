@@ -5,8 +5,8 @@ import org.http4k.lens.Query
 import org.http4k.lens.string
 
 /**Линза для получения имени автора из параметров в URI**/
-fun authorNameLens(value: Request) = lensOrDefault(
+fun authorNameLens(request: Request) = lensOrDefault(
     Query.string().defaulted("authorName",""),
-    value,
+    request,
     ""
 )

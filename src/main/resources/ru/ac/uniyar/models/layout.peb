@@ -50,7 +50,6 @@
 {% endmacro %}
 
 {# macros for selection from a list of enum values #}
-
 {% macro selectFromListEnum(label,name,list,selectedVal) %}
 <label>{{label}}</label>
 <select name="{{name}}">
@@ -60,6 +59,7 @@
 </select>
 {% endmacro %}
 
+{# Макрос для отображенеия списка книг. Выдаёт стандартное сообщение об ошибке. #}
 {% macro showBooksList(list)%}
 {% if list is not empty %}
 <table>
@@ -90,20 +90,29 @@
 {% endmacro %}
 
 
-{% macro showErrors(message,errors) %}
-<h2>Упс, произошла ошибка.</h2>
-<label>{{message}}</label>
-{% for error in errors %}
-    <p>error</p>
-{% endfor %}
-{% endmacro %}
-
-{% macro pageButtons(_pager) %}
-    {% if _pager.havePrevPage %}
-    <a href="{{_pager.prevPageUri}}" class="button"><-</a>
+{% macro showErrors(formErrors,errors = null) %}
+    {% if formErrors is not empty or errors is not empty %}
+    <div>
+        <div class="alert callout" data-closable>
+            {% if formErrors is not empty %}
+                <h3>Пожалуйста, заполните следующие поля:</h3>
+                {% for error in formErrors %}
+                    <p>
+                            {{error.toString()}}
+                    </p>
+                {% endfor %}
+            {% endif %}
+            {% if errors is not empty %}
+                {% for error in errors %}
+                    <p>
+                        {{error}}
+                    </p>
+                {% endfor %}
+            {% endif %}
+            <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
     {% endif %}
-    {% if _pager.haveNextPage %}
-    <a href="{{_pager.nextPageUri}}" class="button">-></a>
-    {% endif %}
 {% endmacro %}
-

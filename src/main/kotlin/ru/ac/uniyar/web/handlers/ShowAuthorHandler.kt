@@ -1,19 +1,17 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
+import org.http4k.core.HttpHandler
+import org.http4k.core.with
+import org.http4k.core.Response
+import org.http4k.core.Status
 import org.http4k.lens.BiDiBodyLens
 import org.http4k.lens.Path
-import org.http4k.lens.Query
-import org.http4k.lens.int
 import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.db.OperationHolder
 import ru.ac.uniyar.models.AuthorVM
 
 fun showAuthor(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder): HttpHandler = { request ->
     val indexPath = Path.of("index")
-//    val pageLens = Query.int().defaulted("page", 1)
-//    var currentPage = pageLens(request)
-//    if (currentPage <= 0) currentPage = 1
     indexPath(request).toIntOrNull()?.let {
         operationHolder.getAuthor.get(it)
     }?.let {
