@@ -16,13 +16,7 @@ class GetChapter(
     fun get(bookId: Int, number: Int): Chapter? =
         database
             .from(ChapterTable)
-            .select(
-                ChapterTable.bookId,
-                ChapterTable.number,
-                ChapterTable.creationDate,
-                ChapterTable.name,
-                ChapterTable.text
-            )
+            .select()
             .where { ChapterTable.bookId eq bookId and (ChapterTable.number eq number) }
             .mapNotNull(Chapter::fromResultSet)
             .firstOrNull()

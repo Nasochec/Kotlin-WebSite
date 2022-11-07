@@ -17,16 +17,7 @@ class GetBook(
     fun get(id: Int): Book? =
         database
             .from(BookTable)
-            .select(
-                BookTable.id,
-                BookTable.name,
-                BookTable.authorId,
-                BookTable.creationDate,
-                BookTable.genreId,
-                BookTable.annotation,
-                BookTable.format,
-                BookTable.rating
-            )
+            .select()
             .where { BookTable.id eq id }
             .limit(1)
             .mapNotNull(Book::fromResultSet)
@@ -35,16 +26,7 @@ class GetBook(
     fun getNewest(): Book? =
         database
             .from(BookTable)
-            .select(
-                BookTable.id,
-                BookTable.name,
-                BookTable.authorId,
-                BookTable.creationDate,
-                BookTable.genreId,
-                BookTable.annotation,
-                BookTable.format,
-                BookTable.rating
-            )
+            .select()
             .mapNotNull(Book::fromResultSet)
             .lastOrNull()
 }

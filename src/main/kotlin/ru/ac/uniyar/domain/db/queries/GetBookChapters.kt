@@ -19,13 +19,7 @@ class GetBookChapters(
     fun list(bookId: Int, pageNumber: Int): List<Chapter> =
         database
             .from(ChapterTable)
-            .select(
-                ChapterTable.bookId,
-                ChapterTable.number,
-                ChapterTable.creationDate,
-                ChapterTable.name,
-                ChapterTable.text
-            )
+            .select()
             .where { ChapterTable.bookId eq bookId }
             .orderBy(ChapterTable.number.asc())
             .limit((pageNumber - 1) * PAGE_LENGTH, PAGE_LENGTH)

@@ -24,16 +24,7 @@ class GetBooks(
     fun list(page: Int, name: String = "", authorId: Int? = null, genreId: Int? = null): List<Book> =
         database
             .from(BookTable)
-            .select(
-                BookTable.id,
-                BookTable.name,
-                BookTable.authorId,
-                BookTable.creationDate,
-                BookTable.genreId,
-                BookTable.annotation,
-                BookTable.format,
-                BookTable.rating
-            )
+            .select()
             .where {
                 (BookTable.name.toLowerCase() like "%${name.lowercase()}%") and
                     ((authorId == null) or (BookTable.authorId eq (authorId ?: 0))) and
@@ -47,15 +38,6 @@ class GetBooks(
     fun listAll(): List<Book> =
         database
             .from(BookTable)
-            .select(
-                BookTable.id,
-                BookTable.name,
-                BookTable.authorId,
-                BookTable.creationDate,
-                BookTable.genreId,
-                BookTable.annotation,
-                BookTable.format,
-                BookTable.rating
-            )
+            .select()
             .mapNotNull(Book::fromResultSet)
 }

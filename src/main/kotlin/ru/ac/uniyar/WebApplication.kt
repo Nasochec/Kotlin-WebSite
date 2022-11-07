@@ -19,8 +19,8 @@ fun main() {
         return
     }
     val database = connectToDatabase(appConfig.databaseConfig)
-    val webConfig: WebConfig = appConfig.webConfig
-    val server = getApp(database,webConfig).start()
+    //val webConfig: WebConfig =
+    val server = getApp(database,appConfig.webConfig).start()
     println("Сервер доступен по адресу http://localhost:" + server.port())
     println("Веб-интерфейс базы данных доступен по адресу http://localhost:${H2DatabaseManager.WEB_PORT}")
     println("Введите любую строку, чтобы завершить работу приложения")

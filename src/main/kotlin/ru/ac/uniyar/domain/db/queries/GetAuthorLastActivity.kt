@@ -17,6 +17,7 @@ class GetAuthorLastActivity(
     private val database: Database
 ) {
     private val maxCreationDateAlias = max(ChapterTable.creationDate).aliased("maxCreationDateAlias")
+    /**Возвращает дату последней активности автора(дата последней написанной главы)**/
     fun get(authorId: Int): LocalDateTime? = database
         .from(ChapterTable)
         .leftJoin(BookTable, ChapterTable.bookId eq BookTable.id)

@@ -20,16 +20,7 @@ class GetGenreBooks(
     fun list(genreId: Int): List<Book> =
         database
             .from(BookTable)
-            .select(
-                BookTable.id,
-                BookTable.name,
-                BookTable.authorId,
-                BookTable.creationDate,
-                BookTable.genreId,
-                BookTable.annotation,
-                BookTable.format,
-                BookTable.rating
-            )
+            .select()
             .where { BookTable.genreId eq genreId }
             .orderBy(BookTable.creationDate.desc())
             .limit(PAGE_LENGTH)

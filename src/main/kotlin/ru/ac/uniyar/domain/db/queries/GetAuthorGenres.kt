@@ -14,6 +14,7 @@ import ru.ac.uniyar.domain.db.tables.GenreTable
 class GetAuthorGenres(
     private val database: Database
 ) {
+    /** Возвращает **/
     fun list(authorId: Int): List<Genre> =
         database
             .from(BookTable)
