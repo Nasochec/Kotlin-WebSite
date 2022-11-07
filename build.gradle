@@ -47,6 +47,8 @@ detekt {
 }
 
 run {
+    environment("DATABASE_JDBC", "jdbc:h2:tcp://localhost/database.h2")
+    environment("web.port", "1717")
     standardInput = System.in
 }
 
@@ -62,6 +64,7 @@ dependencies {
     testImplementation "org.http4k:http4k-testing-kotest:${http4kVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    implementation group: "org.http4k", name: "http4k-cloudnative", version: http4kVersion
     implementation group: "com.h2database", name: "h2", version: h2dbVersion
     implementation group: "org.flywaydb", name: "flyway-core", version: flywayVersion
     implementation group: "org.ktorm", name: "ktorm-core", version: ktormVersion

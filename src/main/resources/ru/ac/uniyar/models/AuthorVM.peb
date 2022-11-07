@@ -4,7 +4,7 @@
 <a class="button" href="/authors" >К списку авторов</a>
 <h1>Карточка автора</h1>
 <div class="primary callout">
-    <h2>{{model.author.name}}</h2>
+    <p>Имя: {{model.author.name}}</p>
     {% if model.lastActivity is not null %}
         <p>Последняя Активность: {{model.lastActivityDate}}</p>
     {% else %}

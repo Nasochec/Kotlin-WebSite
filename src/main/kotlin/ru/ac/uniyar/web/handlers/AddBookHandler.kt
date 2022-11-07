@@ -18,6 +18,8 @@ import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.BookFormat
 import ru.ac.uniyar.domain.Rars
 import ru.ac.uniyar.domain.db.OperationHolder
+import ru.ac.uniyar.domain.db.tables.AUTHOR_NAME_MAX_LENGTH
+import ru.ac.uniyar.domain.db.tables.BOOK_NAME_MAX_LENGTH
 import ru.ac.uniyar.models.AddBookVM
 
 fun addNewBook(
@@ -54,6 +56,8 @@ fun addBook(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder)
     try {
         if (form.errors.isEmpty()) {
             val errors = mutableListOf<String>()
+            if(nameLens(form).length > BOOK_NAME_MAX_LENGTH)
+                errors.add("Длина названия книги не должна превышать $BOOK_NAME_MAX_LENGTH символов.")
             if (operationHolder.getAuthor.get(authorIdLens(form)) == null)
                 errors.add(
                     "Выбран некорректный автор. Либо список авторов пуст, перед добавлением книги," +

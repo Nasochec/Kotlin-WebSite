@@ -6,7 +6,11 @@
 {% block content %}
 <a class="button" href="/book/{{book.id}}" >Назад к книге</a>
 <div class="primary callout">
-    <h2>{{book.name}}. Глава {{chapter.number}}. {{chapter.name}}</h2>
+    <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+            <h3>{{book.name}}. Глава {{chapter.number}}. {{chapter.name}}</h3>
+        </div>
+    </div>
     <div class="grid-x grid-padding-x">
         <div class="medium-12 cell">
             <h3>Автор: {{author.name}} (<a href="/author/{{author.id}}">Подробнее</a>)</h3>

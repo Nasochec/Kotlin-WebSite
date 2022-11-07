@@ -14,16 +14,18 @@ import org.http4k.lens.nonEmptyString
 import org.http4k.lens.webForm
 import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.db.OperationHolder
+import ru.ac.uniyar.domain.db.tables.AUTHOR_NAME_MAX_LENGTH
 import ru.ac.uniyar.models.AddAuthorVM
 
 fun addNewAuthor(
     htmlView: BiDiBodyLens<ViewModel>,
-    form: WebForm = WebForm()
+    form: WebForm = WebForm(),
+    errors:List<String> = listOf()
 ): HttpHandler = {
-    Response(Status.OK).with(htmlView of AddAuthorVM(form))
+    Response(Status.OK).with(htmlView of AddAuthorVM(form,errors))
 }
 
-fun addAuthor(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder): HttpHandler = { request ->
+fun addAuthor(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder): HttpHandler = handler@{ request ->
     val nameLens = FormField.nonEmptyString().required("name", "Имя автора")
     val formLens = Body.webForm(
         Validator.Feedback,
@@ -32,6 +34,11 @@ fun addAuthor(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolde
     val form = formLens(request)
     try {
         if (form.errors.isEmpty()) {
+            val errors = mutableListOf<String>()
+            if(nameLens(form).length > AUTHOR_NAME_MAX_LENGTH)
+                errors.add("Длина имени автора не должна превышать $AUTHOR_NAME_MAX_LENGTH символов.")
+            if(errors.isNotEmpty())
+                return@handler addNewAuthor(htmlView, form,errors).invoke(request)
             operationHolder.addAuthor.insert(nameLens(form))
             val author = operationHolder.getAuthor.getNewest()!!
             Response(Status.FOUND).header("location", "/author/${author.id}")

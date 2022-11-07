@@ -1,30 +1,26 @@
 package ru.ac.uniyar
 
 import H2DatabaseManager
+import ru.ac.uniyar.config.AppConfig
+import ru.ac.uniyar.config.WebConfig
 import org.flywaydb.core.api.FlywayException
-import org.http4k.server.Undertow
-import org.http4k.server.asServer
-import ru.ac.uniyar.domain.db.OperationHolder
 import ru.ac.uniyar.domain.db.connectToDatabase
 import ru.ac.uniyar.domain.db.performMigrations
-import ru.ac.uniyar.web.lens.HTMLView
-import ru.ac.uniyar.web.routers.app
-
-const val PORT_NUMBER = 9000
+import ru.ac.uniyar.web.getApp
 
 fun main() {
+    val appConfig =AppConfig.readConfiguration()
     val h2DatabaseManager = H2DatabaseManager().initialize()
     try {
-        performMigrations()
+        performMigrations(appConfig.databaseConfig)
     } catch (flywayEx: FlywayException) {
         System.err.println("Миграция завершена с ошибкой:" + flywayEx.localizedMessage)
         h2DatabaseManager.stopServers()
         return
     }
-    val database = connectToDatabase()
-    val operationHolder = OperationHolder(database)
-
-    val server = app(operationHolder, HTMLView).asServer(Undertow(PORT_NUMBER)).start()
+    val database = connectToDatabase(appConfig.databaseConfig)
+    val webConfig: WebConfig = appConfig.webConfig
+    val server = getApp(database,webConfig).start()
     println("Сервер доступен по адресу http://localhost:" + server.port())
     println("Веб-интерфейс базы данных доступен по адресу http://localhost:${H2DatabaseManager.WEB_PORT}")
     println("Введите любую строку, чтобы завершить работу приложения")

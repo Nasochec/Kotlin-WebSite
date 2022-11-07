@@ -5,6 +5,8 @@ import org.ktorm.schema.datetime
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
 
+const val BOOK_NAME_MAX_LENGTH = 100
+
 object BookTable : Table<Nothing>("BOOK") {
     val id = int("ID").primaryKey()
     val name = varchar("NAME")

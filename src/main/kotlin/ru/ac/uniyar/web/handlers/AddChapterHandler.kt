@@ -16,6 +16,8 @@ import org.http4k.lens.string
 import org.http4k.lens.webForm
 import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.db.OperationHolder
+import ru.ac.uniyar.domain.db.tables.BOOK_NAME_MAX_LENGTH
+import ru.ac.uniyar.domain.db.tables.CHAPTER_NAME_MAX_LENGTH
 import ru.ac.uniyar.models.AddChapterVM
 import ru.ac.uniyar.web.lens.bookIdLens
 
@@ -46,6 +48,10 @@ fun addChapter(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHold
     try {
         if (form.errors.isEmpty()) {
             val errors = mutableListOf<String>()
+            if( numberLens(form) < 1)
+                errors.add("Указан неверный номер главы. Он должен быть натуральным числом.")
+            if(nameLens(form).length > CHAPTER_NAME_MAX_LENGTH)
+                errors.add("Длина названия главы не должна превышать $CHAPTER_NAME_MAX_LENGTH символов.")
             if (operationHolder.getBook.get(bookLens(form)) == null)
                 errors.add(
                     "Выбрана некорректная книга. Либо список книг пуст, перед добавлением главы," +

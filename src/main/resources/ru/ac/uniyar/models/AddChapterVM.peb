@@ -23,7 +23,7 @@
         <div class="grid-x grid-padding-x">
             <div class="medium-12 cell">
                 <label>Название (необязательное)</label>
-                <input name="name" type="text" value="{{model.name}}">
+                <input name="name" maxlength="50" type="text" value="{{model.name}}">
             </div>
         </div>
         <div class="grid-x grid-padding-x">

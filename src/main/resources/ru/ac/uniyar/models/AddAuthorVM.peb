@@ -2,14 +2,14 @@
 {%block title %}Добавление автора{% endblock %}
 {% block content %}
 <h2>Добавление автора</h2>
-{{ showErrors(model.form.errors) }}
+{{ showErrors(model.form.errors,model.errors) }}
 
 <div class="primary callout">
     <form method="post">
         <div class="grid-x grid-padding-x">
             <div class="medium-12 cell">
                 <label>Имя</label>
-                <input name="name" type="text" value="{{model.name}}">
+                <input name="name" maxlength="100" type="text" value="{{model.name}}">
             </div>
         </div>
         <div class="grid-x grid-padding-x">
