@@ -13,9 +13,9 @@ import org.ktorm.dsl.orderBy
 import org.ktorm.dsl.select
 import org.ktorm.dsl.where
 import org.ktorm.support.mysql.toLowerCase
-import ru.ac.uniyar.domain.Book
 import ru.ac.uniyar.domain.db.PAGE_LENGTH
 import ru.ac.uniyar.domain.db.tables.BookTable
+import ru.ac.uniyar.domain.entities.Book
 
 class GetBooks(
     private val database: Database

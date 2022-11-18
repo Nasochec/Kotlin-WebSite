@@ -2,7 +2,7 @@ package ru.ac.uniyar.models
 
 import org.http4k.lens.WebForm
 import org.http4k.template.ViewModel
-import ru.ac.uniyar.domain.Book
+import ru.ac.uniyar.domain.entities.Book
 
 data class AddChapterVM(
     val form: WebForm = WebForm(),

@@ -1,15 +1,18 @@
 {% extends "./layout.peb" %}
-{% block title %}{{model.genre.name}}{% endblock %}
+{% set genre = model.genreFullData.genre %}
+{% set books = model.genreFullData.books %}
+
+{% block title %}{{genre.name}}{% endblock %}
 {% block content %}
 <h1>Дынные о жанре</h1>
 <div class="primary callout">
-    <p>Название:{{model.genre.name}}</p>
+    <p>Название:{{genre.name}}</p>
 </div>
 
 
 <h3>Книги в этом жанре:</h3>
-{% if model.books is not empty%}
-    {{ showBooksList(model.books) }}
+{% if books is not empty%}
+    {{ showBooksList(books) }}
 {% else %}
 <div class="callout">
     <p>В этом жанре пока нет ни одной книги.</p>

@@ -8,10 +8,10 @@ class AppConfig(private val environment: Environment) {
 
     companion object {
         val appEnv = Environment.fromResource("/ru/ac/uniyar/config/app.properties") overrides
-                Environment.JVM_PROPERTIES overrides
-                Environment.ENV overrides
-                WebConfig.defaultEnv overrides
-                DatabaseConfig.defaultEnv
+            Environment.JVM_PROPERTIES overrides
+            Environment.ENV overrides
+            WebConfig.defaultEnv overrides
+            DatabaseConfig.defaultEnv
 
         fun readConfiguration(): AppConfig = AppConfig(appEnv)
     }

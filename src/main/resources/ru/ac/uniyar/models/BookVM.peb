@@ -1,8 +1,9 @@
 {% extends "./layout.peb" %}
-{% set book = model.book%}
-{% set author = model.author%}
-{% set genre = model.genre%}
-{% block title %}{{model.book.name}}{% endblock %}
+{% set book = model.bookFullData.book%}
+{% set author = model.bookFullData.author%}
+{% set genre = model.bookFullData.genre%}
+{% set chapters = model.bookFullData.chapters%}
+{% block title %}{{book.name}}{% endblock %}
 {% block content %}
 <div>
     <a class="button" href="/books" >К списку книг</a>
@@ -67,7 +68,7 @@
             <a href="{{model.nextPageUri}}" class="button">-></a>
         {% endif %}
         </div>
-        {% if model.chapters is not empty %}
+        {% if chapters is not empty %}
             <h3>Главы:</h3>
             <table>
                 <thead>
@@ -78,11 +79,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for chapter in model.chapters %}
+                {% for chapter in chapters %}
                 <tr>
                     <td>{{chapter.number}}. {{chapter.name}}</td>
                     <td>{{chapter.creationDateFormatted}}</td>
-                    <td><a href="/chapter/{{model.book.id}}/{{chapter.number}}">Подробнее</a></td>
+                    <td><a href="/chapter/{{book.id}}/{{chapter.number}}">Подробнее</a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

@@ -1,7 +1,9 @@
 {% extends "./layout.peb" %}
-{% set book = model.book %}
-{% set author = model.author %}
-{% set chapter = model.chapter %}
+{% set book = model.chapterFullData.book %}
+{% set author = model.chapterFullData.author %}
+{% set chapter = model.chapterFullData.chapter %}
+{% set prevChapterNumber = model.chapterFullData.prevChapterNumber %}
+{% set nextChapterNumber = model.chapterFullData.nextChapterNumber %}
 {% block title %}{{book.name}}. Глава {{chapter.number}}. {{chapter.name}}{% endblock %}
 {% block content %}
 <a class="button" href="/book/{{book.id}}" >Назад к книге</a>
@@ -24,11 +26,11 @@
 </div>
 
 <div>
-{% if model.prevChapterNumber is not null%}
-    <a class="button" href="/chapter/{{book.id}}/{{model.prevChapterNumber}}" ><-</a>
+{% if prevChapterNumber is not null%}
+    <a class="button" href="/chapter/{{book.id}}/{{prevChapterNumber}}" ><-</a>
 {% endif %}
-{% if model.nextChapterNumber is not null%}
-    <a class="button" href="/chapter/{{book.id}}/{{model.nextChapterNumber}}" >-></a>
+{% if nextChapterNumber is not null%}
+    <a class="button" href="/chapter/{{book.id}}/{{nextChapterNumber}}" >-></a>
 {% endif %}
 </div>
 
@@ -40,11 +42,11 @@
 </div>
 
 <div>
-{% if model.prevChapterNumber is not null%}
-<a class="button" href="/chapter/{{book.id}}/{{model.prevChapterNumber}}" ><-</a>
+{% if prevChapterNumber is not null%}
+<a class="button" href="/chapter/{{book.id}}/{{prevChapterNumber}}" ><-</a>
 {% endif %}
-{% if model.nextChapterNumber is not null%}
-<a class="button" href="/chapter/{{book.id}}/{{model.nextChapterNumber}}" >-></a>
+{% if nextChapterNumber is not null%}
+<a class="button" href="/chapter/{{book.id}}/{{nextChapterNumber}}" >-></a>
 {% endif %}
 </div>
 {% endblock %}

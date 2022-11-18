@@ -1,4 +1,4 @@
-package ru.ac.uniyar.domain
+package ru.ac.uniyar.domain.entities
 
 import org.ktorm.dsl.QueryRowSet
 import ru.ac.uniyar.domain.db.tables.ChapterTable

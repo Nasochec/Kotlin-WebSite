@@ -17,8 +17,11 @@ import ru.ac.uniyar.domain.db.tables.ChapterTable
 import ru.ac.uniyar.domain.db.tables.GenreTable
 
 /**Различные запросы к БД для отображения статистической информации**/
-class Statistic(
-    private val database: Database
+class GetStatistic(
+    private val database: Database,
+    private val countAuthors: CountAuthors,
+    private val countBooks: CountBooks,
+    private val countChapters: CountChapters
 ) {
     private val bookCount = count(BookTable.id).aliased("bookCount")
 
@@ -84,4 +87,8 @@ class Statistic(
             else Pair(genreName, bookNumber)
         }
         .firstOrNull()
+
+    fun countAuthors() = countAuthors.count()
+    fun countBooks() = countBooks.count()
+    fun countChapters() = countChapters.count()
 }

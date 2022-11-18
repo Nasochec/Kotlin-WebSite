@@ -1,21 +1,33 @@
 package ru.ac.uniyar.domain.db.queries
 
 import org.ktorm.database.Database
-import org.ktorm.dsl.*
+import org.ktorm.dsl.and
+import org.ktorm.dsl.desc
+import org.ktorm.dsl.eq
+import org.ktorm.dsl.from
+import org.ktorm.dsl.leftJoin
+import org.ktorm.dsl.like
+import org.ktorm.dsl.limit
+import org.ktorm.dsl.mapNotNull
+import org.ktorm.dsl.or
+import org.ktorm.dsl.orderBy
+import org.ktorm.dsl.select
+import org.ktorm.dsl.selectDistinct
+import org.ktorm.dsl.where
 import org.ktorm.support.mysql.toLowerCase
-import ru.ac.uniyar.domain.Author
 import ru.ac.uniyar.domain.db.PAGE_LENGTH
 import ru.ac.uniyar.domain.db.tables.AuthorTable
 import ru.ac.uniyar.domain.db.tables.BookTable
+import ru.ac.uniyar.domain.entities.Author
 
 class GetAuthors(
     private val database: Database
 ) {
     /**Возвращает список состоящий из не более 10 асторов, с пименением сортировки**/
     fun list(page: Int, name: String = "", genreId: Int? = null): List<Author> = if (genreId == null)
-    //разбиение на получение списка с фильтрацией по жанру и без
-    //возникает из-за того, что в варианте с фильтрацией используется leftJoin
-    //но оттуда могут возникать повторяющиеся элементы, если этой фильтрации не происходит
+    // разбиение на получение списка с фильтрацией по жанру и без
+    // возникает из-за того, что в варианте с фильтрацией используется leftJoin
+    // но оттуда могут возникать повторяющиеся элементы, если этой фильтрации не происходит
         list(page, name)
     else
         listWithGenreFilter(page, name, genreId)
@@ -28,7 +40,6 @@ class GetAuthors(
             .orderBy(AuthorTable.creationDate.desc())
             .limit((page - 1) * PAGE_LENGTH, PAGE_LENGTH)
             .mapNotNull(Author::fromResultSet)
-
 
     private fun listWithGenreFilter(page: Int, name: String, genreId: Int? = null): List<Author> =
         database

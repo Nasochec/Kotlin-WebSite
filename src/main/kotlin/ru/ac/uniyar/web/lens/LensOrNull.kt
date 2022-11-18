@@ -9,4 +9,3 @@ fun <IN : Any, OUT>lensOrNull(lens: Lens<IN, OUT?>, value: IN): OUT? =
     } catch (_: LensFailure) {
         null
     }
-

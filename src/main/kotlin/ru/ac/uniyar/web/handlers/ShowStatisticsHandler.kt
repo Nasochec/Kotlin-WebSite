@@ -6,17 +6,17 @@ import org.http4k.core.Status
 import org.http4k.core.with
 import org.http4k.lens.BiDiBodyLens
 import org.http4k.template.ViewModel
-import ru.ac.uniyar.domain.db.OperationHolder
+import ru.ac.uniyar.domain.db.queries.GetStatistic
 import ru.ac.uniyar.models.StatisticsVM
 
-fun showStatistics(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder): HttpHandler = {
-    val authorsNumber = operationHolder.countAuthors.count()
-    val booksNumber = operationHolder.countBooks.count()
-    val chaptersNumber = operationHolder.countChapters.count()
-    val authorWithMostBooks = operationHolder.statistic.getAuthorWithMostBooks()
-    val authorWithMostChapters = operationHolder.statistic.getAuthorWithMostChapters()
-    val bookWithMostChapters = operationHolder.statistic.getBookWithMostChapters()
-    val genreWithMostBooks = operationHolder.statistic.getGenreWithMostBooks()
+fun showStatistics(htmlView: BiDiBodyLens<ViewModel>, statistic: GetStatistic): HttpHandler = {
+    val authorsNumber = statistic.countAuthors()
+    val booksNumber = statistic.countBooks()
+    val chaptersNumber = statistic.countChapters()
+    val authorWithMostBooks = statistic.getAuthorWithMostBooks()
+    val authorWithMostChapters = statistic.getAuthorWithMostChapters()
+    val bookWithMostChapters = statistic.getBookWithMostChapters()
+    val genreWithMostBooks = statistic.getGenreWithMostBooks()
     Response(Status.OK).with(
         htmlView of StatisticsVM(
             authorsNumber,

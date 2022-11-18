@@ -15,11 +15,10 @@ import org.http4k.lens.int
 import org.http4k.lens.nonEmptyString
 import org.http4k.lens.webForm
 import org.http4k.template.ViewModel
-import ru.ac.uniyar.domain.BookFormat
-import ru.ac.uniyar.domain.Rars
 import ru.ac.uniyar.domain.db.OperationHolder
-import ru.ac.uniyar.domain.db.tables.AUTHOR_NAME_MAX_LENGTH
 import ru.ac.uniyar.domain.db.tables.BOOK_NAME_MAX_LENGTH
+import ru.ac.uniyar.domain.entities.BookFormat
+import ru.ac.uniyar.domain.entities.Rars
 import ru.ac.uniyar.models.AddBookVM
 
 fun addNewBook(
@@ -41,7 +40,7 @@ fun addBook(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder)
     val rarsLens = FormField.nonEmptyString().required("rars", "Возрасной рейтинг книги")
     val formatLens = FormField.nonEmptyString().required("format", "Формат книги")
     val genreIdLens = FormField.int().required("genre", "Жанр книги")
-    val annotationLens = FormField.nonEmptyString().required("annotation", "") // TODO
+    val annotationLens = FormField.nonEmptyString().required("annotation", "")
     val formLens = Body.webForm(
         Validator.Feedback,
         nameLens,
@@ -56,7 +55,7 @@ fun addBook(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder)
     try {
         if (form.errors.isEmpty()) {
             val errors = mutableListOf<String>()
-            if(nameLens(form).length > BOOK_NAME_MAX_LENGTH)
+            if (nameLens(form).length > BOOK_NAME_MAX_LENGTH)
                 errors.add("Длина названия книги не должна превышать $BOOK_NAME_MAX_LENGTH символов.")
             if (operationHolder.getAuthor.get(authorIdLens(form)) == null)
                 errors.add(

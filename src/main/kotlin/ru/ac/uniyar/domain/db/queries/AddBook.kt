@@ -2,9 +2,9 @@ package ru.ac.uniyar.domain.db.queries
 
 import org.ktorm.database.Database
 import org.ktorm.dsl.insert
-import ru.ac.uniyar.domain.BookFormat
-import ru.ac.uniyar.domain.Rars
 import ru.ac.uniyar.domain.db.tables.BookTable
+import ru.ac.uniyar.domain.entities.BookFormat
+import ru.ac.uniyar.domain.entities.Rars
 import java.time.LocalDateTime
 
 class AddBook(

@@ -1,4 +1,4 @@
-package ru.ac.uniyar.domain
+package ru.ac.uniyar.domain.entities
 
 import org.ktorm.dsl.QueryRowSet
 import ru.ac.uniyar.domain.db.tables.BookTable
@@ -35,22 +35,4 @@ data class Book(
                 null
             }
     }
-}
-
-/** Возрастной рейтинг книги **/
-enum class Rars(val string: String) {
-    BABY("0+"),
-    CHILD("6+"),
-    TEENAGE("12+"),
-    YOUNG("16+"),
-    ADULT("18+")
-}
-
-/** Формат книги **/
-enum class BookFormat(val string: String) {
-    HARDCOVER("Книга в твёрдом переплёте"),
-    PAPERBACK("Книга в мягком переплёте"),
-    WEBBOOK("Книга в электронном формате"),
-    ARTICLE("Статья в журнале"),
-    WEBARTICKLE("Небольшая статья в интернете")
 }

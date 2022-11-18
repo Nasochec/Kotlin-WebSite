@@ -1,16 +1,15 @@
 package ru.ac.uniyar
 
 import H2DatabaseManager
-import ru.ac.uniyar.config.AppConfig
-import ru.ac.uniyar.config.WebConfig
 import org.flywaydb.core.api.FlywayException
+import ru.ac.uniyar.config.AppConfig
 import ru.ac.uniyar.domain.db.connectToDatabase
 import ru.ac.uniyar.domain.db.performMigrations
 import ru.ac.uniyar.web.getApp
 
 fun main() {
-    val appConfig =AppConfig.readConfiguration()
-    val h2DatabaseManager = H2DatabaseManager().initialize()
+    val appConfig = AppConfig.readConfiguration()
+    val h2DatabaseManager = H2DatabaseManager(appConfig.databaseConfig.databasePort).initialize()
     try {
         performMigrations(appConfig.databaseConfig)
     } catch (flywayEx: FlywayException) {
@@ -19,10 +18,9 @@ fun main() {
         return
     }
     val database = connectToDatabase(appConfig.databaseConfig)
-    //val webConfig: WebConfig =
-    val server = getApp(database,appConfig.webConfig).start()
+    val server = getApp(database, appConfig.webConfig).start()
     println("Сервер доступен по адресу http://localhost:" + server.port())
-    println("Веб-интерфейс базы данных доступен по адресу http://localhost:${H2DatabaseManager.WEB_PORT}")
+    println("Веб-интерфейс базы данных доступен по адресу http://localhost:${appConfig.databaseConfig.databasePort}")
     println("Введите любую строку, чтобы завершить работу приложения")
     readlnOrNull()
     server.stop()

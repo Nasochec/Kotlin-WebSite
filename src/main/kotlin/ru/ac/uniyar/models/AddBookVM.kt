@@ -2,10 +2,10 @@ package ru.ac.uniyar.models
 
 import org.http4k.lens.WebForm
 import org.http4k.template.ViewModel
-import ru.ac.uniyar.domain.Author
-import ru.ac.uniyar.domain.BookFormat
-import ru.ac.uniyar.domain.Genre
-import ru.ac.uniyar.domain.Rars
+import ru.ac.uniyar.domain.entities.Author
+import ru.ac.uniyar.domain.entities.BookFormat
+import ru.ac.uniyar.domain.entities.Genre
+import ru.ac.uniyar.domain.entities.Rars
 
 data class AddBookVM(
     val form: WebForm = WebForm(),

@@ -20,9 +20,9 @@ import ru.ac.uniyar.models.AddAuthorVM
 fun addNewAuthor(
     htmlView: BiDiBodyLens<ViewModel>,
     form: WebForm = WebForm(),
-    errors:List<String> = listOf()
+    errors: List<String> = listOf()
 ): HttpHandler = {
-    Response(Status.OK).with(htmlView of AddAuthorVM(form,errors))
+    Response(Status.OK).with(htmlView of AddAuthorVM(form, errors))
 }
 
 fun addAuthor(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder): HttpHandler = handler@{ request ->
@@ -35,10 +35,10 @@ fun addAuthor(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolde
     try {
         if (form.errors.isEmpty()) {
             val errors = mutableListOf<String>()
-            if(nameLens(form).length > AUTHOR_NAME_MAX_LENGTH)
+            if (nameLens(form).length > AUTHOR_NAME_MAX_LENGTH)
                 errors.add("Длина имени автора не должна превышать $AUTHOR_NAME_MAX_LENGTH символов.")
-            if(errors.isNotEmpty())
-                return@handler addNewAuthor(htmlView, form,errors).invoke(request)
+            if (errors.isNotEmpty())
+                return@handler addNewAuthor(htmlView, form, errors).invoke(request)
             operationHolder.addAuthor.insert(nameLens(form))
             val author = operationHolder.getAuthor.getNewest()!!
             Response(Status.FOUND).header("location", "/author/${author.id}")

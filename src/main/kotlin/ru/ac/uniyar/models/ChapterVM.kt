@@ -1,17 +1,10 @@
 package ru.ac.uniyar.models
 
-import org.http4k.core.Uri
 import org.http4k.template.ViewModel
-import ru.ac.uniyar.domain.Author
-import ru.ac.uniyar.domain.Book
-import ru.ac.uniyar.domain.Chapter
+import ru.ac.uniyar.domain.entities.ChapterFullData
 
 data class ChapterVM(
-    val chapter: Chapter,
-    val book: Book,
-    val author: Author,
-    val nextChapterNumber: Int?,
-    val prevChapterNumber: Int?
+    val chapterFullData: ChapterFullData
 ) : ViewModel {
-    val paragraphs = chapter.text.split("\\n","\n")
+    val paragraphs = chapterFullData.chapter.text.split("\\n", "\n")
 }

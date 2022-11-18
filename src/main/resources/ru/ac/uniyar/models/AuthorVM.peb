@@ -1,20 +1,25 @@
 {% extends "./layout.peb" %}
-{% block title %}{{model.author.name}}{% endblock %}
+
+{% set genres = model.authorFullData.genres %}
+{% set books = model.authorFullData.books %}
+{% set author = model.authorFullData.author %}
+{% set lastActivity = model.authorFullData.lastActivityFormatted %}
+{% block title %}{{author.name}}{% endblock %}
 {% block content %}
 <a class="button" href="/authors" >К списку авторов</a>
 <h1>Карточка автора</h1>
 <div class="primary callout">
-    <p>Имя: {{model.author.name}}</p>
-    {% if model.lastActivity is not null %}
-        <p>Последняя Активность: {{model.lastActivityDate}}</p>
+    <p>Имя: {{author.name}}</p>
+    {% if lastActivity is not null %}
+        <p>Последняя Активность: {{lastActivity}}</p>
     {% else %}
         <p>Пока не написал ни одной главы (</p>
     {% endif %}
 </div>
-{%if model.genres is not empty %}
+{%if genres is not empty %}
 <div class="callout">
     <h3>Пишет в жанрах:</h3>
-    {% for genre in model.genres %}
+    {% for genre in genres %}
         <p>{{genre.name}} (<a href="/genre/{{genre.id}}">Подробнее</a>)</p>
     {% endfor %}
 </div>
@@ -25,8 +30,8 @@
 </div>
 
 <h3>Последние добавленные книги:</h3>
-{% if model.books is not empty %}
-{{ showBooksList(model.books) }}
+{% if books is not empty %}
+    {{ showBooksList(books) }}
 {% else %}
 <div class="callout">
     <p>Этот автор пока не добавил ни одной книги.</p>

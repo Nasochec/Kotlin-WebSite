@@ -4,21 +4,15 @@ import org.http4k.core.Uri
 import org.http4k.core.query
 import org.http4k.core.removeQuery
 import org.http4k.template.ViewModel
-import ru.ac.uniyar.domain.Author
-import ru.ac.uniyar.domain.Book
-import ru.ac.uniyar.domain.Chapter
-import ru.ac.uniyar.domain.Genre
+import ru.ac.uniyar.domain.entities.BookFullData
 
 data class BookVM(
-    val book: Book,
-    val author: Author,
-    val genre: Genre,
-    val chapters: List<Chapter>,
+    val bookFullData: BookFullData,
     val currentPage: Int,
     val currentPageUri: Uri
 ) : ViewModel {
     val nextPageUri = currentPageUri.removeQuery("page").query("page", (currentPage + 1).toString()).toString()
     val prevPageUri = currentPageUri.removeQuery("page").query("page", (currentPage - 1).toString()).toString()
-    val addButtonUri = "/chapter/new?bookId=${book.id}"
-    val annotationParagraphs = book.annotation.split("\\n","\n")
+    val addButtonUri = "/chapter/new?bookId=${bookFullData.book.id}"
+    val annotationParagraphs = bookFullData.book.annotation.split("\\n", "\n")
 }

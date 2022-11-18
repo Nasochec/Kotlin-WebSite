@@ -6,19 +6,15 @@ import org.http4k.core.Status
 import org.http4k.core.with
 import org.http4k.lens.BiDiBodyLens
 import org.http4k.lens.Path
-import org.http4k.lens.Query
-import org.http4k.lens.int
 import org.http4k.template.ViewModel
-import ru.ac.uniyar.domain.db.OperationHolder
+import ru.ac.uniyar.domain.db.queries.GetGenre
 import ru.ac.uniyar.models.GenreVM
 
-fun showGenre(htmlView: BiDiBodyLens<ViewModel>, operationHolder: OperationHolder): HttpHandler = { request ->
+fun showGenre(htmlView: BiDiBodyLens<ViewModel>, getGenre: GetGenre): HttpHandler = { request ->
     val indexPath = Path.of("index")
     indexPath(request).toIntOrNull()?.let { id ->
-        operationHolder.getGenre.get(id)
+        getGenre.getFullData(id)
     }?.let { genre ->
-        val books = operationHolder.getGenreBooks.list(genre.id)
-        val viewModel = GenreVM(genre, books)
-        Response(Status.OK).with(htmlView of viewModel)
+        Response(Status.OK).with(htmlView of GenreVM(genre))
     } ?: Response(Status.BAD_REQUEST)
 }
