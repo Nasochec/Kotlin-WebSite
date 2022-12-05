@@ -1,0 +1,10 @@
+{% extends "./layout.peb" %}
+{% block title %}{{genre.name}}{% endblock %}
+{% block content %}
+<a href="/ratings" class="button">К списку возрастных рейтингов</a>
+<h1>Данные о жанре</h1>
+<div class="primary callout">
+    <p>Название:{{model.rating}}</p>
+</div>
+{% endblock %}
+

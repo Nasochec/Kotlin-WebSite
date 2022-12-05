@@ -71,5 +71,5 @@ dependencies {
     implementation group: "org.ktorm", name: "ktorm-support-mysql", version: ktormVersion
     implementation group: "org.slf4j", name: "slf4j-api", version: slf4jversion
     implementation group: "org.slf4j", name: "slf4j-simple", version: slf4jversion
-
+    implementation group: 'com.auth0', name:'java-jwt', version: javaJwtVersion
 }

@@ -20,14 +20,10 @@
 <div class="callout">
     <h3>Пишет в жанрах:</h3>
     {% for genre in genres %}
-        <p>{{genre.name}} (<a href="/genre/{{genre.id}}">Подробнее</a>)</p>
+        <p>{{genre.name}} (<a href="/genre/{{genre.name}}">Подробнее</a>)</p>
     {% endfor %}
 </div>
 {% endif %}
-
-<div>
-<a href="{{model.addBookUri}}" class="button">Добавить книгу</a>
-</div>
 
 <h3>Последние добавленные книги:</h3>
 {% if books is not empty %}

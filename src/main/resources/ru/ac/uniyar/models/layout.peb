@@ -12,13 +12,44 @@
 <body>
     <div class="grid-container">
         <div class="top-bar medium-6">
-            <ul class="dropdown menu" data-dropdown-menu>
-                <li class="menu-text">Самиздат</li>
-                <li><a href="/">Главная страница</a></li>
-                <li><a href="/authors">Список авторов</a></li>
-                <li><a href="/books">Список книг</a></li>
-                <li><a href="/statistics">Статистика</a></li>
-            </ul>
+            <div class="tob-tab-left">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li class="menu-text">Самиздат</li>
+                    <li><a href="/">Главная страница</a></li>
+                    <li><a href="/authors">Список авторов</a></li>
+                    <li><a href="/books">Список книг</a></li>
+                    <li><a href="/genres">Список жанров</a></li>
+                    <li><a href="/statistics">Статистика</a></li>
+                    {% if permissions.can_add_ratings or permissions.can_add_book_formats %}
+                    <li>
+                        <a>Другое</a>
+                        <ul class="menu">
+                            {% if permissions.can_add_ratings %}
+                                <li><a href="/ratings">Возрастные рейтинги</a></li>
+                            {% endif %}
+                            {% if permissions.can_add_book_formats %}
+                                <li><a href="/formats">Форматы книг</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="tob-tab-right">
+                <ul class="dropdown menu" data-dropdown-menu>
+                {% if user is not null %}
+                    <li>
+                        <a>{{ user.name }}</a>
+                        <ul class="menu">
+                            <li><a href="/author/{{ user.login }}">Моя страница</a></li>
+                            <li><a href="/logout">Выйти</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="/login">Войти</a></li>
+                {% endif %}
+                </ul>
+            </div>
         </div>
         <div class="medium-6 cell">
             {% block content %}{% endblock %}
@@ -49,16 +80,6 @@
 </select>
 {% endmacro %}
 
-{# macros for selection from a list of enum values #}
-{% macro selectFromListEnum(label,name,list,selectedVal) %}
-<label>{{label}}</label>
-<select name="{{name}}">
-    {% for item in list %}
-    <option value="{{item.name}}" {% if selectedVal == item.name %} selected {% endif %}>{{item.string}}</option>
-    {% endfor %}
-</select>
-{% endmacro %}
-
 {# Макрос для отображенеия списка книг. Выдаёт стандартное сообщение об ошибке. #}
 {% macro showBooksList(list)%}
 {% if list is not empty %}
@@ -66,7 +87,8 @@
     <thead>
     <tr>
         <th width="200">Название книги</th>
-        <th width="150">Рейтинг</th>
+        <th width="150">Жанр</th>
+        <th width="50">Рейтинг</th>
         <th width="150">Формат</th>
         <th width="150"></th>
     </tr>
@@ -75,8 +97,9 @@
     {% for book in list %}
     <tr>
         <td>{{book.name}}</td>
-        <td>{{book.rating.string}}</td>
-        <td>{{book.format.string}}</td>
+        <td>{{book.genre}}</td>
+        <td>{{book.rating}}</td>
+        <td>{{book.format}}</td>
         <td><a href="/book/{{book.id}}">Подробнее</a></td>
     </tr>
     {% endfor %}
@@ -89,6 +112,46 @@
 {% endif %}
 {% endmacro %}
 
+{# macros for selection from a list of objects that have only one field - name #}
+{% macro selectFromSimpleList(label,name,list,selectedName,haveNullValue = false) %}
+<label>{{label}}</label>
+<select name="{{name}}">
+    {% if haveNullValue %}
+        <option value="">(нет)</option>
+    {% endif %}
+    {% for item in list %}
+        <option value="{{item.name}}" {% if selectedName == item.name %} selected {% endif %}>{{item.name}}</option>
+    {% endfor %}
+
+</select>
+{% endmacro %}
+
+{# macros for selection rating from s list #}
+{% macro selectRating(label,name,ratings,selected,haveNullValue = false) %}
+<label>{{label}}</label>
+<select name="{{name}}">
+    {% if haveNullValue %}
+        <option value="">(нет)</option>
+    {% endif %}
+    {% for item in ratings %}
+        <option value="{{item.neededAge}}" {% if selected == item.neededAge %} selected {% endif %}>{{item}}</option>
+    {% endfor %}
+
+</select>
+{% endmacro %}
+
+{# macros for selection rating from s list #}
+{% macro selectAuthor(label,name,authors,selectedLogin,haveNullValue = false) %}
+<label>{{label}}</label>
+<select name="{{name}}">
+    {% if haveNullValue %}
+        <option value="">(нет)</option>
+    {% endif %}
+    {% for item in authors %}
+        <option value="{{item.login}}" {% if selectedLogin == item.login %} selected {% endif %}>{{item.name}}</option>
+    {% endfor %}
+</select>
+{% endmacro %}
 
 {% macro showErrors(formErrors,errors = null) %}
     {% if formErrors is not empty or errors is not empty %}
@@ -98,7 +161,7 @@
                 <h3>Пожалуйста, заполните следующие поля:</h3>
                 {% for error in formErrors %}
                     <p>
-                            {{error.toString()}}
+                            {{error.meta.description}}
                     </p>
                 {% endfor %}
             {% endif %}
@@ -115,4 +178,15 @@
         </div>
     </div>
     {% endif %}
+{% endmacro %}
+
+{% macro pageButtons(pager) %}
+    <div>
+        {% if pager.havePrevPage %}
+            <a href="{{pager.prevPageUri}}" class="button"><-</a>
+        {% endif %}
+        {% if pager.haveNextPage %}
+            <a href="{{pager.nextPageUri}}" class="button">-></a>
+        {% endif %}
+    </div>
 {% endmacro %}

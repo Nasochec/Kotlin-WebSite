@@ -7,6 +7,7 @@ import org.http4k.lens.string
 
 class DatabaseConfig(val databaseHost: String, val databasePort: Int, val databaseName: String) {
     val JDBCConnectionString = "jdbc:h2:tcp://$databaseHost/$databaseName"
+
     companion object {
         val databasePortLens = EnvironmentKey.int().required("database.port", "Database web port")
         val databaseHostLens = EnvironmentKey.string().required("database.host", "Database web host")
@@ -16,6 +17,7 @@ class DatabaseConfig(val databaseHost: String, val databasePort: Int, val databa
             databasePortLens(environment),
             databaseNameLens(environment)
         )
+
         val defaultEnv = Environment.defaults(
             databaseHostLens of "localhost",
             databasePortLens of 8082,

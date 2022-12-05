@@ -18,7 +18,7 @@ fun main() {
         return
     }
     val database = connectToDatabase(appConfig.databaseConfig)
-    val server = getApp(database, appConfig.webConfig).start()
+    val server = getApp(database, appConfig.webConfig, appConfig.saltConfig).start()
     println("Сервер доступен по адресу http://localhost:" + server.port())
     println("Веб-интерфейс базы данных доступен по адресу http://localhost:${appConfig.databaseConfig.databasePort}")
     println("Введите любую строку, чтобы завершить работу приложения")

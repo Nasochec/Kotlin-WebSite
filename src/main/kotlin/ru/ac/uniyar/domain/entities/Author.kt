@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 data class Author(
-    val id: Int,
+    val login: String,
     val name: String,
     val creationDate: LocalDateTime
 ) {
@@ -18,9 +18,9 @@ data class Author(
         fun fromResultSet(row: QueryRowSet): Author? =
             try {
                 Author(
-                    row[AuthorTable.id]!!,
+                    row[AuthorTable.login]!!,
                     row[AuthorTable.name]!!,
-                    row[AuthorTable.creationDate]!!
+                    row[AuthorTable.registrationDate]!!
                 )
             } catch (npe: NullPointerException) {
                 null

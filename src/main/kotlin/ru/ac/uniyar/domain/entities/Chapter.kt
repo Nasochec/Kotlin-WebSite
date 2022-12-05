@@ -10,7 +10,10 @@ data class Chapter(
     val number: Int,
     val name: String?,
     val text: String,
-    val creationDate: LocalDateTime
+    val creationDate: LocalDateTime,
+    val isVisible: Boolean,
+    val numberOfReads: Int = 0,
+    val isRead: Boolean? = null
 ) {
     val creationDateFormatted: String =
         creationDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
@@ -23,7 +26,8 @@ data class Chapter(
                     row[ChapterTable.number]!!,
                     row[ChapterTable.name],
                     row[ChapterTable.text]!!,
-                    row[ChapterTable.creationDate]!!
+                    row[ChapterTable.creationDate]!!,
+                    row[ChapterTable.isVisible]!!
                 )
             } catch (npe: NullPointerException) {
                 null

@@ -1,0 +1,37 @@
+    {% extends "./layout.peb" %}
+        {% block title%}Возрастные рейтинги{% endblock %}
+    {% block content %}
+    <div class="callout">
+        <h2>Возрастные рейтинги</h2>
+    </div>
+    {% if permissions.can_add_ratings %}
+        <a href="{{ model.addButtonUri }}" class="button">Добавить</a>
+    {% endif %}
+    {% if model.ratings is not empty %}
+    {{ pageButtons(model.pager) }}
+    <table>
+        <thead>
+        <tr>
+            <th width="150">Необходимый возраст</th>
+            <th width="150"></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for rating in model.ratings %}
+            <tr>
+                <td>{{rating}}</td>
+                {% if permissions.can_add_ratings %}
+                    <td><a href="/rating/{{rating.neededAge}}/edit">Редактировать</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="callout">
+        <p>По запросу ничего не найдено, возможно вы перешли слишком большой номер страницы, либо список пуст.</p>
+    </div>
+    {% endif %}
+
+
+    {% endblock %}

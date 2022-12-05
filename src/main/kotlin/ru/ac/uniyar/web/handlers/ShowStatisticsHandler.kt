@@ -1,15 +1,14 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.HttpHandler
-import org.http4k.core.Response
-import org.http4k.core.Status
-import org.http4k.core.with
-import org.http4k.lens.BiDiBodyLens
-import org.http4k.template.ViewModel
+import org.http4k.core.*
 import ru.ac.uniyar.domain.db.queries.GetStatistic
 import ru.ac.uniyar.models.StatisticsVM
+import ru.ac.uniyar.web.templates.ContextAwareViewRenderer
 
-fun showStatistics(htmlView: BiDiBodyLens<ViewModel>, statistic: GetStatistic): HttpHandler = {
+fun showStatistics(
+    htmlView: ContextAwareViewRenderer,
+    statistic: GetStatistic
+): HttpHandler = { request ->
     val authorsNumber = statistic.countAuthors()
     val booksNumber = statistic.countBooks()
     val chaptersNumber = statistic.countChapters()
@@ -18,7 +17,7 @@ fun showStatistics(htmlView: BiDiBodyLens<ViewModel>, statistic: GetStatistic): 
     val bookWithMostChapters = statistic.getBookWithMostChapters()
     val genreWithMostBooks = statistic.getGenreWithMostBooks()
     Response(Status.OK).with(
-        htmlView of StatisticsVM(
+        htmlView(request) of StatisticsVM(
             authorsNumber,
             booksNumber,
             chaptersNumber,

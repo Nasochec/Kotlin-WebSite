@@ -4,9 +4,8 @@ import org.http4k.lens.WebForm
 import org.http4k.template.ViewModel
 import ru.ac.uniyar.domain.entities.Book
 
-data class AddChapterVM(
+class AddChapterVM(
     val form: WebForm = WebForm(),
-    val errors: List<String>,
     val books: List<Book>,
     val selectedBookId: Int?
 ) : ViewModel {

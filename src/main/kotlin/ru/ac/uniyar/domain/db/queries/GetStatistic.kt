@@ -28,9 +28,9 @@ class GetStatistic(
     /**Возвращает пару - автор написавший наибольшее количество книг и их количество**/
     fun getAuthorWithMostBooks(): Pair<String, Int>? = database
         .from(AuthorTable)
-        .leftJoin(BookTable, BookTable.authorId eq AuthorTable.id)
-        .select(AuthorTable.id, AuthorTable.name, bookCount)
-        .groupBy(AuthorTable.id)
+        .leftJoin(BookTable, BookTable.authorLogin eq AuthorTable.login)
+        .select(AuthorTable.login, AuthorTable.name, bookCount)
+        .groupBy(AuthorTable.login)
         .orderBy(bookCount.desc())
         .mapNotNull { row: QueryRowSet ->
             val authorName = row[AuthorTable.name]
@@ -45,10 +45,10 @@ class GetStatistic(
     /**Возвращает пару - автор написавший наибольшее количество глав и их количество**/
     fun getAuthorWithMostChapters(): Pair<String, Int>? = database
         .from(AuthorTable)
-        .leftJoin(BookTable, BookTable.authorId eq AuthorTable.id)
+        .leftJoin(BookTable, BookTable.authorLogin eq AuthorTable.login)
         .leftJoin(ChapterTable, BookTable.id eq ChapterTable.bookId)
-        .select(AuthorTable.id, AuthorTable.name, chaperCount)
-        .groupBy(AuthorTable.id)
+        .select(AuthorTable.login, AuthorTable.name, chaperCount)
+        .groupBy(AuthorTable.login)
         .orderBy(chaperCount.desc())
         .mapNotNull { row: QueryRowSet ->
             val authorName = row[AuthorTable.name]
@@ -76,9 +76,9 @@ class GetStatistic(
     /**Возвращает пару - жанр в котором написано наибольшее количество книг и их количество**/
     fun getGenreWithMostBooks(): Pair<String, Int>? = database
         .from(GenreTable)
-        .leftJoin(BookTable, BookTable.genreId eq GenreTable.id)
-        .select(GenreTable.id, GenreTable.name, bookCount)
-        .groupBy(GenreTable.id)
+        .leftJoin(BookTable, BookTable.genreName eq GenreTable.name)
+        .select(GenreTable.name, bookCount)
+        .groupBy(GenreTable.name)
         .orderBy(bookCount.desc())
         .mapNotNull { row: QueryRowSet ->
             val genreName = row[GenreTable.name]
@@ -88,7 +88,7 @@ class GetStatistic(
         }
         .firstOrNull()
 
-    fun countAuthors() = countAuthors.count()
-    fun countBooks() = countBooks.count()
+    fun countAuthors() = countAuthors.countAll()
+    fun countBooks() = countBooks.countAll()
     fun countChapters() = countChapters.count()
 }

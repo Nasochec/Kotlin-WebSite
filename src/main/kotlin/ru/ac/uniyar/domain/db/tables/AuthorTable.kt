@@ -1,14 +1,14 @@
 package ru.ac.uniyar.domain.db.tables
 
-import org.ktorm.schema.Table
-import org.ktorm.schema.datetime
-import org.ktorm.schema.int
-import org.ktorm.schema.varchar
+import org.ktorm.schema.*
 
 const val AUTHOR_NAME_MAX_LENGTH = 100
+const val AUTHOR_LOGIN_MAX_LENGTH = 40
 
 object AuthorTable : Table<Nothing>("AUTHOR") {
-    val id = int("ID").primaryKey()
+    val login = varchar("LOGIN").primaryKey()
     val name = varchar("NAME")
-    val creationDate = datetime("CREATION_DATE")
+    val registrationDate = datetime("REGISTRATION_DATE")
+    val roleName = varchar("ROLE_NAME")
+    val birthDate = date("BIRTH_DATE")
 }

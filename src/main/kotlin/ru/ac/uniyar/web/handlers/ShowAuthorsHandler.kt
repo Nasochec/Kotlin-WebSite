@@ -1,28 +1,29 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.HttpHandler
-import org.http4k.core.Response
-import org.http4k.core.Status
-import org.http4k.core.with
-import org.http4k.lens.BiDiBodyLens
-import org.http4k.template.ViewModel
+import org.http4k.core.*
+import ru.ac.uniyar.domain.db.queries.CountAuthors
 import ru.ac.uniyar.domain.db.queries.GetAuthors
 import ru.ac.uniyar.domain.db.queries.GetGenres
 import ru.ac.uniyar.models.AuthorsVM
+import ru.ac.uniyar.models.Pager
 import ru.ac.uniyar.web.lens.authorNameLens
-import ru.ac.uniyar.web.lens.genreIdLens
+import ru.ac.uniyar.web.lens.genreNameLens
 import ru.ac.uniyar.web.lens.pageLens
+import ru.ac.uniyar.web.templates.ContextAwareViewRenderer
 
 fun showAuthors(
-    htmlView: BiDiBodyLens<ViewModel>,
+    htmlView: ContextAwareViewRenderer,
     getAuthors: GetAuthors,
+    countAuthors: CountAuthors,
     getGenres: GetGenres
 ): HttpHandler = { request ->
     val currentPage = pageLens(request)
     val name = authorNameLens(request)
-    val genreId = genreIdLens(request)
-    val authors = getAuthors.list(currentPage, name, genreId)
+    val genre = genreNameLens(request)
+    val authors = getAuthors.list(currentPage, name, genre)
+    val authorsCount = countAuthors.countFiltered(name, genre)
     val genres = getGenres.listAll()
-    val view = AuthorsVM(authors, genres, request, currentPage)
-    Response(Status.OK).with(htmlView of view)
+    val pager = Pager(currentPage, request.uri, authorsCount)
+    val view = AuthorsVM(pager, authors, genres, request)
+    Response(Status.OK).with(htmlView(request) of view)
 }

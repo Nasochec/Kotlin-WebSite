@@ -10,10 +10,10 @@ const val BOOK_NAME_MAX_LENGTH = 100
 object BookTable : Table<Nothing>("BOOK") {
     val id = int("ID").primaryKey()
     val name = varchar("NAME")
-    val authorId = int("AUTHOR_ID")
-    val genreId = int("GENRE_ID")
+    val authorLogin = varchar("AUTHOR_LOGIN")
+    val genreName = varchar("GENRE_NAME")
     val creationDate = datetime("CREATION_DATE")
-    val rating = varchar("RATING")
-    val format = varchar("FORMAT")
+    val neededAge = int("NEEDED_AGE")
+    val formatName = varchar("FORMAT_NAME")
     val annotation = varchar("ANNOTATION")
 }

@@ -1,10 +1,8 @@
 package ru.ac.uniyar.domain.db.queries
 
 import org.ktorm.database.Database
-import org.ktorm.dsl.insert
+import org.ktorm.dsl.insertAndGenerateKey
 import ru.ac.uniyar.domain.db.tables.BookTable
-import ru.ac.uniyar.domain.entities.BookFormat
-import ru.ac.uniyar.domain.entities.Rars
 import java.time.LocalDateTime
 
 class AddBook(
@@ -12,20 +10,20 @@ class AddBook(
 ) {
     fun insert(
         name: String,
-        authorId: Int,
-        genreId: Int,
-        rating: Rars,
-        format: BookFormat,
+        authorLogin: String,
+        genreName: String,
+        neededAge: Int,
+        formatName: String,
         annotation: String
-    ) =
+    ): Int =
         database
-            .insert(BookTable) {
+            .insertAndGenerateKey(BookTable) {
                 set(BookTable.name, name)
-                set(BookTable.authorId, authorId)
-                set(BookTable.genreId, genreId)
-                set(BookTable.rating, rating.name)
-                set(BookTable.format, format.name)
+                set(BookTable.authorLogin, authorLogin)
+                set(BookTable.genreName, genreName)
+                set(BookTable.neededAge, neededAge)
+                set(BookTable.formatName, formatName)
                 set(BookTable.annotation, annotation)
                 set(BookTable.creationDate, LocalDateTime.now())
-            }
+            } as Int
 }

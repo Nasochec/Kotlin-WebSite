@@ -9,7 +9,6 @@ import org.ktorm.dsl.leftJoin
 import org.ktorm.dsl.like
 import org.ktorm.dsl.limit
 import org.ktorm.dsl.mapNotNull
-import org.ktorm.dsl.or
 import org.ktorm.dsl.orderBy
 import org.ktorm.dsl.select
 import org.ktorm.dsl.selectDistinct
@@ -24,33 +23,33 @@ class GetAuthors(
     private val database: Database
 ) {
     /**Возвращает список состоящий из не более 10 асторов, с пименением сортировки**/
-    fun list(page: Int, name: String = "", genreId: Int? = null): List<Author> = if (genreId == null)
+    fun list(page: Int, name: String = "", genreName: String? = null): List<Author> = if (genreName == null)
     // разбиение на получение списка с фильтрацией по жанру и без
     // возникает из-за того, что в варианте с фильтрацией используется leftJoin
     // но оттуда могут возникать повторяющиеся элементы, если этой фильтрации не происходит
         list(page, name)
     else
-        listWithGenreFilter(page, name, genreId)
+        listWithGenreFilter(page, name, genreName)
 
     private fun list(page: Int, name: String): List<Author> =
         database
             .from(AuthorTable)
-            .select(AuthorTable.id, AuthorTable.creationDate, AuthorTable.name)
-            .where { (AuthorTable.name.toLowerCase() like "%${name.lowercase()}%") }
-            .orderBy(AuthorTable.creationDate.desc())
+            .select(AuthorTable.login, AuthorTable.registrationDate, AuthorTable.name)
+            .where((AuthorTable.name.toLowerCase() like "%${name.lowercase()}%"))
+            .orderBy(AuthorTable.registrationDate.desc())
             .limit((page - 1) * PAGE_LENGTH, PAGE_LENGTH)
             .mapNotNull(Author::fromResultSet)
 
-    private fun listWithGenreFilter(page: Int, name: String, genreId: Int? = null): List<Author> =
+    private fun listWithGenreFilter(page: Int, name: String, genreName: String): List<Author> =
         database
             .from(AuthorTable)
-            .leftJoin(BookTable, AuthorTable.id eq BookTable.authorId)
-            .selectDistinct(AuthorTable.id, AuthorTable.creationDate, AuthorTable.name, BookTable.genreId)
-            .where {
+            .leftJoin(BookTable, AuthorTable.login eq BookTable.authorLogin)
+            .selectDistinct(AuthorTable.login, AuthorTable.registrationDate, AuthorTable.name, BookTable.genreName)
+            .where(
                 (AuthorTable.name.toLowerCase() like "%${name.lowercase()}%") and
-                    ((genreId == null) or (BookTable.genreId eq (genreId ?: 0)))
-            }
-            .orderBy(AuthorTable.creationDate.desc())
+                    (BookTable.genreName.toLowerCase() like "%${genreName.lowercase()}%")
+            )
+            .orderBy(AuthorTable.registrationDate.desc())
             .limit((page - 1) * PAGE_LENGTH, PAGE_LENGTH)
             .mapNotNull(Author::fromResultSet)
 
@@ -58,6 +57,6 @@ class GetAuthors(
     fun listAll(): List<Author> =
         database
             .from(AuthorTable)
-            .select(AuthorTable.id, AuthorTable.creationDate, AuthorTable.name)
+            .select(AuthorTable.login, AuthorTable.registrationDate, AuthorTable.name)
             .mapNotNull(Author::fromResultSet)
 }

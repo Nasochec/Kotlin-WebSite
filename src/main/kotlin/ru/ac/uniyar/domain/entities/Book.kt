@@ -8,10 +8,10 @@ import java.time.format.DateTimeFormatter
 data class Book(
     val id: Int,
     val name: String,
-    val authorId: Int,
-    val rating: Rars,
-    val format: BookFormat,
-    val genreId: Int,
+    val authorLogin: String,
+    val rating: Rating,
+    val format: Format,
+    val genre: Genre,
     val annotation: String,
     val creationDate: LocalDateTime
 ) {
@@ -24,10 +24,10 @@ data class Book(
                 Book(
                     row[BookTable.id]!!,
                     row[BookTable.name]!!,
-                    row[BookTable.authorId]!!,
-                    Rars.valueOf(row[BookTable.rating]!!),
-                    BookFormat.valueOf(row[BookTable.format]!!),
-                    row[BookTable.genreId]!!,
+                    row[BookTable.authorLogin]!!,
+                    Rating(row[BookTable.neededAge]!!),
+                    Format(row[BookTable.formatName]!!),
+                    Genre(row[BookTable.genreName]!!),
                     row[BookTable.annotation]!!,
                     row[BookTable.creationDate]!!
                 )

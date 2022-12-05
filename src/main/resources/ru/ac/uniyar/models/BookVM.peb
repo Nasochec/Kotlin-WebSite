@@ -1,7 +1,6 @@
 {% extends "./layout.peb" %}
 {% set book = model.bookFullData.book%}
 {% set author = model.bookFullData.author%}
-{% set genre = model.bookFullData.genre%}
 {% set chapters = model.bookFullData.chapters%}
 {% block title %}{{book.name}}{% endblock %}
 {% block content %}
@@ -27,7 +26,7 @@
         </div>
         <div class="medium-6 cell">
             <div class="primary callout">
-                <p>Формат книги: {{book.format.string}}</p>
+                <p>Формат книги: {{book.format}}</p>
             </div>
         </div>
     </div>
@@ -35,19 +34,19 @@
     <div class="grid-x grid-padding-x">
         <div class="medium-12  cell ">
             <div class="primary callout">
-                <p>Автор книги: {{author.name}} (<a href="/author/{{author.id}}">Подробнее</a>)</p>
+                <p>Автор книги: {{author.name}} (<a href="/author/{{author.login}}">Подробнее</a>)</p>
             </div>
         </div>
     </div>
     <div class="grid-x grid-padding-x">
         <div class="medium-8 cell">
             <div class="primary callout">
-                <p>Жанр: {{genre.name}} (<a href="/genre/{{genre.id}}">Подробнее</a>)</p>
+                <p>Жанр: {{book.genre}} (<a href="/genre/{{book.genre.name}}">Подробнее</a>)</p>
             </div>
         </div>
         <div class="medium-4 cell">
             <div class="primary callout">
-                <p>Возрастой рейтинг: {{book.rating.string}}</p>
+                <p>Возрастой рейтинг: {{book.rating}}</p>
             </div>
         </div>
     </div>
@@ -60,39 +59,58 @@
             {% endfor %}
         </div>
         <div>
-        <a href="{{model.addButtonUri}}" class="button">Добавить главу</a>
-        {% if model.currentPage > 1%}
-        <a href="{{model.prevPageUri}}" class="button"><-</a>
-        {% endif %}
-        {% if model.chapters is not empty %}
-            <a href="{{model.nextPageUri}}" class="button">-></a>
+        {{ pageButtons(pager)}}
+        {% if model.isOwner and permissions.can_add_chapters %}
+            <a href="{{model.addButtonUri}}" class="button">Добавить главу</a>
         {% endif %}
         </div>
-        {% if chapters is not empty %}
-            <h3>Главы:</h3>
-            <table>
-                <thead>
-                <tr>
-                    <th width="300">Номер</th>
-                    <th width="150">Дата публикации</th>
-                    <th width="150"></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for chapter in chapters %}
-                <tr>
-                    <td>{{chapter.number}}. {{chapter.name}}</td>
-                    <td>{{chapter.creationDateFormatted}}</td>
-                    <td><a href="/chapter/{{book.id}}/{{chapter.number}}">Подробнее</a></td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
+        {% if permissions.can_view_chapters %}
+            {% if chapters is not empty %}
+                <h3>Главы:</h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th width="">Номер</th>
+                        <th width="150">Дата публикации</th>
+                        <th width="200">Прочтений</th>
+                        <th width="150"></th>
+                        {% if model.isOwner%}<th width="100"></th>{% endif %}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for chapter in chapters %}
+                    <tr>
+                        <td>{% if model.isOwner and not chapter.isVisible %}(Не опубликована) {%endif%}{{chapter.number}}. {{chapter.name}}</td>
+                        <td>{{chapter.creationDateFormatted}}</td>
+                        <td>{{ chapter.numberOfReads }}
+                        {%if chapter.isRead is not null%}
+                            {% if chapter.isRead %} (Прочитано) {% else %}(Не прочитано){% endif %}
+                        {%endif%}
+                        </td>
+                        <td><a href="/chapter/{{book.id}}/{{chapter.number}}">Подробнее</a></td>
+                        {% if model.isOwner%}
+                            <td>
+                                {% if not chapter.isVisible %}
+                                    <a href="/chapter/{{book.id}}/{{chapter.number}}/publish" methods="POST">Опубликовать</a>
+                                {%else%}
+                                    <a href="/chapter/{{book.id}}/{{chapter.number}}/hide">Скрыть</a>
+                                {%endif%}
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="callout">
+                    <p>По запросу ничего не найдено, возможно вы перешли на слишком большой номер страницы, либо в эту книгу пока не добавлено глав.</p>
+                </div>
+            {% endif %}
+        {%else%}
             <div class="callout">
-                <p>По запросу ничего не найдено, возможно вы перешли на слишком большой номер страницы, либо в эту книгу пока не добавлено глав.</p>
+                <p>Для простотра глав требуется авторизоваться. <a href="/login">Войти</a></p>
             </div>
-        {% endif %}
+        {%endif%}
     </div>
 </div>
 {% endblock %}

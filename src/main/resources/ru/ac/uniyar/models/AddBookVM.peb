@@ -10,33 +10,24 @@
     <div class="grid-x grid-padding-x">
         <div class="medium-12 cell">
             <label>Название</label>
-            <input name="name" maxlength="100" type="text" value="{{model.name}}">
+            <input name="name" maxlength="100" type="text" value="{{model.form.fields["name"] | first}}">
         </div>
     </div>
     <div class="grid-x grid-padding-x">
-        <div class="medium-6 cell">
-            {% if model.author is null %}
-                {{ selectFromList("Автор:","author",model.authors,model.selectedAuthorId) }}
-            {% else %}
-                {{ selectFromList("Автор:","author",model.authors,model.author) }}
-            {% endif %}
+        <div class="medium-4 cell">
+            {{ selectFromSimpleList("Жанр:", "genre", model.genres, model.form.fields["genre"] | first) }}
         </div>
-        <div class="medium-6 cell">
-            {{ selectFromList("Жанр:","genre",model.genres,model.genre) }}
+        <div class="medium-4 cell">
+            {{ selectRating("Возрастной рейтинг:", "rating", model.ratings, model.rating) }}
+        </div>
+        <div class="medium-4 cell">
+            {{ selectFromSimpleList("Формат:", "format", model.formats, model.form.fields["format"] | first) }}
         </div>
     </div>
     <div class="grid-x grid-padding-x">
         <div class="medium-12 cell">
             <label>Анотация</label>
-            <textarea name="annotation">{{model.annotation}}</textarea>
-        </div>
-    </div>
-    <div class="grid-x grid-padding-x">
-        <div class="medium-6 cell">
-            {{ selectFromListEnum("Возрастной рейтинг:","rars",model.rarsValues,model.rars) }}
-        </div>
-        <div class="medium-6 cell">
-            {{ selectFromListEnum("Формат:","format",model.formatValues,model.format) }}
+            <textarea name="annotation">{{model.form.fields["annotation"] | first}}</textarea>
         </div>
     </div>
     <div class="grid-x grid-padding-x">

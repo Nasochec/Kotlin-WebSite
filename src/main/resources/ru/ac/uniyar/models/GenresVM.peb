@@ -1,0 +1,36 @@
+{% extends "./layout.peb" %}
+{% block title%}Жанры{% endblock %}
+{% block content %}
+    <div class="callout">
+        <h2>Жанры</h2>
+    </div>
+    {% if permissions.can_add_genres %}
+        <a href="{{ model.addButtonUri }}" class="button">Добавить</a>
+    {% endif %}
+    {% if model.genres is not empty %}
+    {{ pageButtons(model.pager) }}
+    <table>
+        <thead>
+        <tr>
+            <th width="150">Название</th>
+            <th width="150"></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for genre in model.genres %}
+                <tr>
+                    <td>{{genre.name}}</td>
+                    <td><a href="/genre/{{genre.name}}">Подробнее</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="callout">
+        <p>По запросу ничего не найдено, возможно вы перешли слишком большой номер страницы, либо по указанным
+            параметрам фильтрации ничего не найдено.</p>
+    </div>
+    {% endif %}
+
+
+{% endblock %}

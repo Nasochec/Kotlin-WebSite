@@ -12,7 +12,7 @@
                     <input name="authorName" type="text" value="{{model.authorName}}">
                 </div>
                 <div class="medium-6 cell">
-                        {{ selectFromList("Пишет в жанре:","genreId",model.genres,model.selectedGenre,true) }}
+                        {{ selectFromSimpleList("Поиск по жанру:","genreName",model.genres,model.selectedGenre,true) }}
                 </div>
             </div>
             <div class="grid-x grid-padding-x">
@@ -24,13 +24,7 @@
     </div>
 
     <div>
-        {% if model.currentPage > 1%}
-            <a href="{{model.prevPageUri}}" class="button"><-</a>
-        {% endif %}
-        {% if model.authors is not empty%}
-            <a href="{{model.nextPageUri}}" class="button">-></a>
-        {% endif %}
-        <a href="/author/new" class="button">Добавить</a>
+        {{ pageButtons(model.pager) }}
     </div>
     {% if model.authors is not empty %}
     <table>
@@ -44,7 +38,7 @@
                 {% for author in model.authors %}
             <tr>
                 <td>{{author.name}}</td>
-                <td><a href="/author/{{author.id}}">Подробнее</a></td>
+                <td><a href="/author/{{author.login}}">Подробнее</a></td>
             </tr>
                 {% endfor %}
         </tbody>

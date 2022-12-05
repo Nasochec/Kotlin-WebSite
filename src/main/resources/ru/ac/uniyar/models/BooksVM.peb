@@ -9,13 +9,13 @@
             <div class="grid-x grid-padding-x">
                 <div class="medium-4 cell">
                     <label>Поиск по названию:</label>
-                    <input name="name" type="text" value="{{model.bookName}}">
+                    <input name="bookName" type="text" value="{{model.bookName}}">
                 </div>
                 <div class="medium-4 cell">
-                        {{ selectFromList("Поиск по жанру:","genreId",model.genres,model.selectedGenre,true) }}
+                    {{ selectFromSimpleList("Поиск по жанру:","genreName",model.genres,model.selectedGenre,true) }}
                 </div>
                 <div class="medium-4 cell">
-                        {{ selectFromList("Поиск по автору:","authorId",model.authors,model.selectedAuthor,true) }}
+                    {{ selectAuthor("Поиск по автору:","authorLogin",model.authors,model.selectedAuthor,true) }}
                 </div>
             </div>
             <div class="grid-x grid-padding-x">
@@ -26,13 +26,10 @@
         </form>
     </div>
     <div>
-        {% if model.currentPage > 1%}
-            <a href="{{model.prevPageUri}}" class="button"><-</a>
+        {{ pageButtons(model.pager) }}
+        {% if permissions.can_add_books %}
+            <a href="/book/new" class="button">Добавить</a>
         {% endif %}
-        {% if model.books is not empty%}
-            <a href="{{model.nextPageUri}}" class="button">-></a>
-        {% endif %}
-        <a href="/book/new" class="button">Добавить</a>
     </div>
 
     {{ showBooksList(model.books) }}

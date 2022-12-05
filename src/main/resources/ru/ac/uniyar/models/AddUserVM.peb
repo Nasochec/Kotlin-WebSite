@@ -1,0 +1,45 @@
+{% extends "./layout.peb" %}
+{%block title %}Регистрация{% endblock %}
+{% block content %}
+<h2>Регистрация</h2>
+{{ showErrors(model.form.errors,model.errors) }}
+
+<div class="primary callout">
+    <form method="post">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Введите логин:</label>
+                <input name="login" maxlength="{{model.userLoginLength}}" type="text" value="{{ model.form.fields["login"] |first}}">
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <label>Введите пароль:</label>
+                <input name="password" maxlength="{{model.userPasswordLength}}" type="password" value="{{ model.form.fields["password"] |first}}">
+            </div>
+            <div class="medium-6 cell">
+                <label>Подтвердите пароль:</label>
+                <input name="passwordAccept" maxlength="{{model.userPasswordLength}}" type="password" value="{{ model.form.fields["passwordAccept"] |first}}">
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Введите ваше имя:</label>
+                <input name="name" maxlength="{{ model.userNameLength }}" type="text" value="{{ model.form.fields["name"] |first}}">
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Введите вашу дату рождения:</label>
+                <input name="birthDate" type="date" value="{{model.form.fields["birthDate"] | first}}">
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <input type="submit" class="button" value="Зарегистрироваться">
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

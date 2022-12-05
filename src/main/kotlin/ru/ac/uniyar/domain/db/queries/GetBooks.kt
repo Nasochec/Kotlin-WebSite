@@ -21,14 +21,14 @@ class GetBooks(
     private val database: Database
 ) {
     /**Возвращает список из не более чем 10 книг с применением фильтрации и постраничным выводом**/
-    fun list(page: Int, name: String = "", authorId: Int? = null, genreId: Int? = null): List<Book> =
+    fun list(page: Int, name: String = "", author_login: String? = null, genreName: String? = null): List<Book> =
         database
             .from(BookTable)
             .select()
             .where {
                 (BookTable.name.toLowerCase() like "%${name.lowercase()}%") and
-                    ((authorId == null) or (BookTable.authorId eq (authorId ?: 0))) and
-                    ((genreId == null) or (BookTable.genreId eq (genreId ?: 0)))
+                    ((author_login == null) or (BookTable.authorLogin eq (author_login ?: ""))) and
+                    ((genreName == null) or (BookTable.genreName.toLowerCase() like "%${genreName?.lowercase() ?: ""}%"))
             }
             .orderBy(BookTable.creationDate.desc())
             .limit((page - 1) * PAGE_LENGTH, PAGE_LENGTH)
@@ -39,5 +39,13 @@ class GetBooks(
         database
             .from(BookTable)
             .select()
+            .mapNotNull(Book::fromResultSet)
+
+    /**Возвращает список всех книг одного автора**/
+    fun listAll(authorLogin: String): List<Book> =
+        database
+            .from(BookTable)
+            .select()
+            .where(BookTable.authorLogin eq authorLogin)
             .mapNotNull(Book::fromResultSet)
 }

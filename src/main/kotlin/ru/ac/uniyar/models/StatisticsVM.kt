@@ -7,7 +7,7 @@ import org.http4k.template.ViewModel
  * authorWMC = authorWithMostChapters
  * bookWMC = bookWithMostChapters
  * genreWMB = genreEithMostBooks**/
-data class StatisticsVM(
+class StatisticsVM(
     val authorsNumber: Int,
     val booksNumber: Int,
     val chaptersNumber: Int,

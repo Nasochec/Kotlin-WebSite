@@ -1,0 +1,38 @@
+{% extends "./layout.peb" %}
+    {% block title%}Форматы книг{% endblock %}
+{% block content %}
+    <div class="callout">
+        <h2>Форматы книг</h2>
+    </div>
+    {% if permissions.can_add_book_formats %}
+        <a href="{{ model.addButtonUri }}" class="button">Добавить</a>
+    {% endif %}
+    {% if model.formats is not empty %}
+
+    {{ pageButtons(model.pager) }}
+    <table>
+        <thead>
+        <tr>
+            <th width="150">Название</th>
+            <th width="150"></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for format in model.formats %}
+            <tr>
+                <td>{{format.name}}</td>
+            {% if permissions.can_add_book_formats %}
+                <td><a href="/format/{{format.name}}/edit">Редактировать</a></td>
+            {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="callout">
+        <p>По запросу ничего не найдено, возможно вы перешли слишком большой номер страницы, либо список пуст.</p>
+    </div>
+    {% endif %}
+
+
+{% endblock %}
