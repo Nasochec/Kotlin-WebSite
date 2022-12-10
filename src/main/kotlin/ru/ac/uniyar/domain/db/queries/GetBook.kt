@@ -37,22 +37,14 @@ class GetBook(
             .mapNotNull(Book::fromResultSet)
             .lastOrNull()
 
-    fun getFullData(id: Int, showNotVisible: Boolean, page: Int, userLogin: String): BookFullData? {
+    /**Возвращает книгу, её автора, список её глав и их количество, с учётом что скрытые главы надо отображать только автору.**/
+    fun getFullData(id: Int, page: Int, userLogin: String?): BookFullData? {
         val book = get(id) ?: return null
         return BookFullData(
             book,
             getAuthor.getNotNull(book.authorLogin),
-            getChapters.list(page, id, showNotVisible, userLogin),
-            countChapters.count(id, showNotVisible)
-        )
-    }
-    fun getFullDataWithoutChapters(id: Int): BookFullData? {
-        val book = get(id) ?: return null
-        return BookFullData(
-            book,
-            getAuthor.getNotNull(book.authorLogin),
-            listOf(),
-            0
+            getChapters.list(page, id, userLogin),
+            countChapters.count(id, userLogin)
         )
     }
 }

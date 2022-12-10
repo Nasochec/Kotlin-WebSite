@@ -1,0 +1,57 @@
+{% extends "./layout.peb" %}
+{% set book = model.book%}
+{% set isOwner = author.login == user.login %}
+{% block title %}{{book.name}}{% endblock %}
+{% block content %}
+<div>
+    <a class="button" href="/book/{{ book.id }}" >Назад к книге</a>
+    <div class="grid-x grid-padding-x">
+        <div class="medium-12 cell">
+            <div class="primary callout">
+                <h2>Редактирование возрастного ограничения книги</h2>
+            </div>
+        </div>
+        <div class="medium-12 cell">
+            <div class="primary callout">
+                <p>Название книги: {{book.name}}</p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="grid-x grid-padding-x">
+        <div class="grid-x grid-padding-x medium-8 cell">
+            <div class="medium-12 cell">
+                <div class="primary callout">
+                    <p>Жанр: {{book.genre}} (<a href="/genre/{{book.genre.name}}">Подробнее</a>)</p>
+                </div>
+            </div>
+            <div class="medium-12 cell">
+                <div class="primary callout">
+                    <p>Формат книги: {{book.format}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="medium-4 cell">
+            <div class="primary callout">
+                <form method="post">
+                    <div class="medium-12 cell">
+                    {% if model.rating is not null %}
+                    {{ selectRating("Возрастной рейтинг:", "rating", model.ratings,model.rating) }}
+                    {%else%}
+                    {{ selectRating("Возрастной рейтинг:", "rating", model.ratings, book.rating.neededAge) }}
+                    {% endif %}
+                    </div>
+                    <div class="grid-x grid-padding-x">
+                        <div class="medium-12 cell">
+                            <input type="submit" class="button">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

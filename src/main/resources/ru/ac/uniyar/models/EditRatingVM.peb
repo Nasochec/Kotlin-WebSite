@@ -1,0 +1,24 @@
+{% extends "./layout.peb" %}
+{% set rating = model.rating%}
+    {%block title %}Редактирование возрастного рейтинга{% endblock %}
+{% block content %}
+<h2>Редактирование возрастного рейтинга</h2>
+{{ showErrors(model.form.errors) }}
+<div class="primary callout">
+    <form method="post">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Необходимый возраст</label>
+                <input name="neededAge" type="number"
+                       {% if model.neededAge is not null%}value="{{model.neededAge}}"
+                       {% else %}value="{{ rating.neededAge }}"{% endif %} >
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <input type="submit" class="button">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

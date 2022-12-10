@@ -153,22 +153,14 @@
 </select>
 {% endmacro %}
 
-{% macro showErrors(formErrors,errors = null) %}
+{% macro showErrors(formErrors) %}
     {% if formErrors is not empty or errors is not empty %}
     <div>
         <div class="alert callout" data-closable>
             {% if formErrors is not empty %}
-                <h3>Пожалуйста, заполните следующие поля:</h3>
                 {% for error in formErrors %}
                     <p>
                             {{error.meta.description}}
-                    </p>
-                {% endfor %}
-            {% endif %}
-            {% if errors is not empty %}
-                {% for error in errors %}
-                    <p>
-                        {{error}}
                     </p>
                 {% endfor %}
             {% endif %}

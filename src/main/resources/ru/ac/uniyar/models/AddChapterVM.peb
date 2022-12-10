@@ -1,9 +1,8 @@
 {% extends "./layout.peb" %}
-
 {%block title %}Добавление главы{% endblock %}
 {% block content %}
 <h2>Добавление главы</h2>
-{{ showErrors(model.form.errors,model.errors) }}
+{{ showErrors(model.form.errors) }}
 
 <div class="primary callout">
     <form method="post">
@@ -17,19 +16,19 @@
             </div>
             <div class="medium-6 cell">
                 <label>Номер главы:</label>
-                <input name="number" type="number" value="{{model.number}}">
+                <input name="number" type="number" value="{{ model.form.fields["number"] |first}}">
             </div>
         </div>
         <div class="grid-x grid-padding-x">
             <div class="medium-12 cell">
                 <label>Название (необязательное)</label>
-                <input name="name" maxlength="50" type="text" value="{{model.name}}">
+                <input name="name" maxlength="{{ model.chapterNameLength }}" type="text" value="{{ model.form.fields["name"] |first}}">
             </div>
         </div>
         <div class="grid-x grid-padding-x">
             <div class="medium-12 cell">
                 <label>Текст:</label>
-                <textarea name="text">{{model.text}}</textarea>
+                <textarea name="text">{{ model.form.fields["text"] |first}}</textarea>
             </div>
         </div>
         <div class="grid-x grid-padding-x">

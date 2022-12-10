@@ -4,6 +4,7 @@
 {% set chapter = model.chapterFullData.chapter %}
 {% set prevChapterNumber = model.chapterFullData.prevChapterNumber %}
 {% set nextChapterNumber = model.chapterFullData.nextChapterNumber %}
+{% set isOwner = author.login == user.login %}
 {% block title %}{{book.name}}. Глава {{chapter.number}}. {{chapter.name}}{% endblock %}
 {% block content %}
 <a class="button" href="/book/{{book.id}}" >Назад к книге</a>
@@ -15,7 +16,7 @@
     </div>
     <div class="grid-x grid-padding-x">
         <div class="medium-12 cell">
-            <h3>Автор: {{author.name}} (<a href="/author/{{author.id}}">Подробнее</a>)</h3>
+            <h3>Автор: {{author.name}} (<a href="/author/{{author.login}}">Подробнее</a>)</h3>
         </div>
     </div>
     <div class="grid-x grid-padding-x">
@@ -27,7 +28,16 @@
         </div>
     </div>
 </div>
-
+{% if isOwner and permissions.can_add_chapters %}
+    <form method="post">
+    {%if chapter.isVisible%}
+        <input class="button" value="Скрыть" name="hidePublish" type="submit">
+    {% else %}
+        <input class="button" value="Опубликовать" name="hidePublish" type="submit">
+    {%endif%}
+    </form>
+<a href="/chapter/{{ book.id }}/{{ chapter.number }}/edit" class="button">Редактировать</a>
+{% endif %}
 <div>
 {% if prevChapterNumber is not null%}
     <a class="button" href="/chapter/{{book.id}}/{{prevChapterNumber}}" ><-</a>

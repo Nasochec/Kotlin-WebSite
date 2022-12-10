@@ -20,6 +20,6 @@ fun authenticationFilter(
             val req = userLens(request)?.let { user ->
                 request.with(permissionLens of getUserRole.get(user.login))
             } ?: request.with(permissionLens of Permissions("GUEST"))
-            next(request)
+            next(req)
         }
     }

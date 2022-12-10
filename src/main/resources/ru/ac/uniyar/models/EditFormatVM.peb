@@ -1,0 +1,25 @@
+{% extends "./layout.peb" %}
+{% set format = model.format%}
+{% set name = model.form.fields["name"] | first %}
+{% block title %}Редактирование формата{% endblock %}
+{% block content %}
+<h2>Редактирование формата</h2>
+{{ showErrors(model.form.errors) }}
+
+<div class="primary callout">
+    <form method="post">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Название</label>
+                <input name="name" maxlength="{{model.formatNameLength}}" type="text"
+                       {% if name is not null%}value="{{ name }}"{% else %}value="{{ format.name }}"{% endif %}>
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <input type="submit" class="button">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

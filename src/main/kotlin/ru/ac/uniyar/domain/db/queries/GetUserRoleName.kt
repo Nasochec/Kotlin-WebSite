@@ -1,7 +1,11 @@
 package ru.ac.uniyar.domain.db.queries
 
 import org.ktorm.database.Database
-import org.ktorm.dsl.*
+import org.ktorm.dsl.eq
+import org.ktorm.dsl.from
+import org.ktorm.dsl.mapNotNull
+import org.ktorm.dsl.select
+import org.ktorm.dsl.where
 import ru.ac.uniyar.domain.db.tables.AuthorTable
 
 class GetUserRoleName(private val database: Database) {
@@ -10,7 +14,7 @@ class GetUserRoleName(private val database: Database) {
             .from(AuthorTable)
             .select(AuthorTable.roleName)
             .where(AuthorTable.login eq login)
-            .map { row ->
+            .mapNotNull { row ->
                 row[AuthorTable.roleName]!!
             }
             .firstOrNull()

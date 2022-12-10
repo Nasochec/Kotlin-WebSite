@@ -1,6 +1,9 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
+import org.http4k.core.HttpHandler
+import org.http4k.core.Response
+import org.http4k.core.Status
+import org.http4k.core.with
 import ru.ac.uniyar.domain.db.queries.CountGenres
 import ru.ac.uniyar.domain.db.queries.GetGenres
 import ru.ac.uniyar.models.GenresVM
@@ -19,5 +22,5 @@ fun showGenres(
     val genres = getGenres.list(page, name)
     val genresCount = countGenres.countFiltered(name)
     val pager = Pager(page, request.uri, genresCount)
-    Response(Status.OK).with(htmlView(request) of GenresVM(pager, genres))
+    Response(Status.OK).with(htmlView(request) of GenresVM(pager, genres, request))
 }

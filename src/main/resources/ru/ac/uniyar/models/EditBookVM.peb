@@ -1,0 +1,65 @@
+{% extends "./layout.peb" %}
+{% set book = model.book%}
+{% set annotataion = model.form.fields["annotation"] | first %}
+{% set name = model.form.fields["name"] | first %}
+{% set genre = model.form.fields["genre"] | first%}
+{% set format = model.form.fields["format"] | first%}
+{% block title %}Редактирование книги{% endblock %}
+{% block content %}
+<a href="/book/{{ model.book.id }}" class="button">Назад к книге</a>
+<h2>Редактирование книги</h2>
+{{ showErrors(model.form.errors) }}
+
+<div class="primary callout">
+    <form method="post">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Название</label>
+                <input name="name" maxlength="100" type="text"
+                {% if name is not null %} value="{{ name }}" {%else%} value="{{ book.name }}" {% endif %}
+                >
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-4 cell">
+                {% if genre is not null %}
+                    {{ selectFromSimpleList("Жанр:", "genre", model.genres, genre) }}
+                {%else%}
+                    {{ selectFromSimpleList("Жанр:", "genre", model.genres, book.genre) }}
+                {% endif %}
+            </div>
+            {% if not book.neededAgeSetByAdmin or permissions.can_change_ratings %}
+            <div class="medium-4 cell">
+                {% if model.rating is not null %}
+                    {{ selectRating("Возрастной рейтинг:", "rating", model.ratings,model.rating) }}
+                    {%else%}
+                    {{ selectRating("Возрастной рейтинг:", "rating", model.ratings, book.rating.neededAge) }}
+                {% endif %}
+            </div>
+            {%else%}
+            <div class="medium-4 cell">
+                <label>Возрастной рейтингу установлен админинстратором: {{ book.rating }}</label>
+            </div>
+            {%endif%}
+            <div class="medium-4 cell">
+                {% if format is not null %}
+                    {{ selectFromSimpleList("Формат:", "format", model.formats, format) }}
+                {%else%}
+                    {{ selectFromSimpleList("Формат:", "format", model.formats, book.format) }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Анотация</label>
+                <textarea name="annotation">{% if annotataion is not null %}{{annotataion}}{% else %}{{ book.annotation }}{% endif %}</textarea>
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <input type="submit" class="button">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

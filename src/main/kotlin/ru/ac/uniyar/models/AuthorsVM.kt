@@ -10,7 +10,7 @@ class AuthorsVM(
     pager: Pager,
     val authors: List<Author>,
     val genres: List<Genre>,
-    val request: Request
+    request: Request
 ) : PagerVM(pager) {
     val selectedGenre = genreNameLens(request)
     val authorName = authorNameLens(request)

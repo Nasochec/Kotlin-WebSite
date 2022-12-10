@@ -4,11 +4,22 @@
     <div class="callout">
         <h2>Жанры</h2>
     </div>
+    <form method="get">
+        <div class="grid-x callout">
+            <div class="medium-12 cell">
+                <label>Поиск по названию:</label>
+                <input name="genreName" type="text" value="{{ model.genreName }}">
+            </div>
+            <div>
+                <input type="submit" class="button" value="Показать">
+            </div>
+        </div>
+    </form>
     {% if permissions.can_add_genres %}
         <a href="{{ model.addButtonUri }}" class="button">Добавить</a>
     {% endif %}
-    {% if model.genres is not empty %}
     {{ pageButtons(model.pager) }}
+    {% if model.genres is not empty %}
     <table>
         <thead>
         <tr>

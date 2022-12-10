@@ -1,7 +1,10 @@
 package ru.ac.uniyar.domain.db.queries
 
 import org.ktorm.database.Database
-import org.ktorm.dsl.*
+import org.ktorm.dsl.count
+import org.ktorm.dsl.from
+import org.ktorm.dsl.mapNotNull
+import org.ktorm.dsl.select
 import ru.ac.uniyar.domain.db.tables.RatingTable
 
 class CountRatings(
@@ -10,7 +13,6 @@ class CountRatings(
     companion object {
         val ratingCount = count(RatingTable.neededAge).aliased("ratingCount")
     }
-    // TODO delete + rename
     fun countAll(): Int =
         database
             .from(RatingTable)

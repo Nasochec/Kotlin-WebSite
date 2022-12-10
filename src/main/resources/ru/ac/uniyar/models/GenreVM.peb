@@ -9,7 +9,9 @@
 <div class="primary callout">
     <p>Название:{{genre.name}}</p>
 </div>
-
+{% if permissions.can_add_genres%}
+<a href="/genre/{{ genre.name }}/edit" class="button">Редактировать</a>
+{% endif %}
 <h3>Книги в этом жанре:</h3>
 {% if books is not empty%}
     {{ showBooksList(books) }}

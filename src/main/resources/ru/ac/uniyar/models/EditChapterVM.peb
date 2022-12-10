@@ -1,0 +1,47 @@
+{% extends "./layout.peb" %}
+{% block title %}Редактирование главы{% endblock %}
+{% set chapter = model.chapter %}
+{% set book = model.book %}
+{% set number = model.form.fields["number"] | first %}
+{% set name = model.form.fields["name"] | first %}
+{% set text = model.form.fields["text"] | first %}
+{% block content %}
+<a href="/chapter/{{ book.id }}/{{ chapter.number }}" class="button">Назад к главе</a>
+<h2>Редактирование главы</h2>
+{{ showErrors(model.form.errors) }}
+
+<div class="primary callout">
+    <form method="post">
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <h3>Книга: {{ book.name }}</h3>
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <label>Номер главы:</label>
+                <input name="number" type="number"
+                    {% if number is not null %}value="{{ number }}"{% else %}value="{{ chapter.number }}"{% endif %}
+                >
+            </div>
+            <div class="medium-6 cell">
+                <label>Название (необязательное)</label>
+                <input name="name" maxlength="{{ model.chapterNameLength }}" type="text"
+                   {% if name is not null %}value="{{ name }}"{% else %}value="{{ chapter.name }}"{% endif %}
+                >
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+                <label>Текст:</label>
+                <textarea name="text">{% if text is not null %}{{ text }}{% else %}{{ chapter.text }}{% endif %}</textarea>
+            </div>
+        </div>
+        <div class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+                <input type="submit" class="button">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

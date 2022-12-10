@@ -13,7 +13,7 @@ class BooksVM(
     val books: List<Book>,
     val authors: List<Author>,
     val genres: List<Genre>,
-    val request: Request
+    request: Request
 ) : PagerVM(pager) {
     val selectedGenre = genreNameLens(request)
     val selectedAuthor = authorLoginLens(request)

@@ -2,7 +2,7 @@
 
 {% block title %}Войти{% endblock %}
 {% block content %}
-{{ showErrors(model.form.errors,model.errors) }}
+{{ showErrors(model.form.errors) }}
     <div class="primary callout">
         <h2>Войти</h2>
         <form method="post">

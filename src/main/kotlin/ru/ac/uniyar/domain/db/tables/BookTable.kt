@@ -1,6 +1,7 @@
 package ru.ac.uniyar.domain.db.tables
 
 import org.ktorm.schema.Table
+import org.ktorm.schema.boolean
 import org.ktorm.schema.datetime
 import org.ktorm.schema.int
 import org.ktorm.schema.varchar
@@ -16,4 +17,5 @@ object BookTable : Table<Nothing>("BOOK") {
     val neededAge = int("NEEDED_AGE")
     val formatName = varchar("FORMAT_NAME")
     val annotation = varchar("ANNOTATION")
+    val neededAgeSetByAdmin = boolean("NEEDED_AGE_SET_BY_ADMIN")
 }

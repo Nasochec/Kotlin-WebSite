@@ -13,7 +13,8 @@ data class Book(
     val format: Format,
     val genre: Genre,
     val annotation: String,
-    val creationDate: LocalDateTime
+    val creationDate: LocalDateTime,
+    val neededAgeSetByAdmin: Boolean
 ) {
     val creationDateFormatted: String =
         creationDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"))
@@ -29,7 +30,8 @@ data class Book(
                     Format(row[BookTable.formatName]!!),
                     Genre(row[BookTable.genreName]!!),
                     row[BookTable.annotation]!!,
-                    row[BookTable.creationDate]!!
+                    row[BookTable.creationDate]!!,
+                    row[BookTable.neededAgeSetByAdmin]!!
                 )
             } catch (npe: NullPointerException) {
                 null

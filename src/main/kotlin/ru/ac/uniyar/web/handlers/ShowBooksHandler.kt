@@ -1,13 +1,19 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
+import org.http4k.core.HttpHandler
+import org.http4k.core.Response
+import org.http4k.core.Status
+import org.http4k.core.with
 import ru.ac.uniyar.domain.db.queries.CountBooks
 import ru.ac.uniyar.domain.db.queries.GetAuthors
 import ru.ac.uniyar.domain.db.queries.GetBooks
 import ru.ac.uniyar.domain.db.queries.GetGenres
 import ru.ac.uniyar.models.BooksVM
 import ru.ac.uniyar.models.Pager
-import ru.ac.uniyar.web.lens.*
+import ru.ac.uniyar.web.lens.authorLoginLens
+import ru.ac.uniyar.web.lens.bookNameLens
+import ru.ac.uniyar.web.lens.genreNameLens
+import ru.ac.uniyar.web.lens.pageLens
 import ru.ac.uniyar.web.templates.ContextAwareViewRenderer
 
 fun showBooks(

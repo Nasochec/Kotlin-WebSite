@@ -1,7 +1,17 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
-import org.http4k.lens.*
+import org.http4k.core.Body
+import org.http4k.core.HttpHandler
+import org.http4k.core.Response
+import org.http4k.core.Status
+import org.http4k.core.with
+import org.http4k.lens.FormField
+import org.http4k.lens.Invalid
+import org.http4k.lens.LensFailure
+import org.http4k.lens.Validator
+import org.http4k.lens.WebForm
+import org.http4k.lens.nonEmptyString
+import org.http4k.lens.webForm
 import ru.ac.uniyar.domain.db.queries.AddGenre
 import ru.ac.uniyar.domain.db.queries.GetGenre
 import ru.ac.uniyar.domain.db.tables.GENRE_NAME_MAX_LENGTH
@@ -20,7 +30,7 @@ fun addGenre(
     addGenre: AddGenre,
     getGenre: GetGenre
 ): HttpHandler = handler@{ request ->
-    val nameLens = FormField.nonEmptyString().required("name", "Название жанра")
+    val nameLens = FormField.nonEmptyString().required("name", "Заполните название жанра")
     val formLens = Body.webForm(
         Validator.Feedback,
         nameLens

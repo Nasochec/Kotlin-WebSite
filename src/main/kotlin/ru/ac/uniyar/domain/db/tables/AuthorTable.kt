@@ -1,6 +1,9 @@
 package ru.ac.uniyar.domain.db.tables
 
-import org.ktorm.schema.*
+import org.ktorm.schema.Table
+import org.ktorm.schema.date
+import org.ktorm.schema.datetime
+import org.ktorm.schema.varchar
 
 const val AUTHOR_NAME_MAX_LENGTH = 100
 const val AUTHOR_LOGIN_MAX_LENGTH = 40

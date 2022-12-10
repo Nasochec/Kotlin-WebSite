@@ -7,8 +7,8 @@
     {% if permissions.can_add_ratings %}
         <a href="{{ model.addButtonUri }}" class="button">Добавить</a>
     {% endif %}
-    {% if model.ratings is not empty %}
     {{ pageButtons(model.pager) }}
+    {% if model.ratings is not empty %}
     <table>
         <thead>
         <tr>

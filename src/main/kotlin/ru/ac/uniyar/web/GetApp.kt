@@ -24,9 +24,9 @@ import ru.ac.uniyar.web.templates.ContextAwareViewRenderer
 
 fun getApp(database: Database, webConfig: WebConfig, saltConfig: SaltConfig): Http4kServer {
     val contexts = RequestContexts()
-    val userContexts: RequestContextLens<User?> = RequestContextKey.optional<User>(contexts, "user")
+    val userContexts: RequestContextLens<User?> = RequestContextKey.optional(contexts, "user")
     val permissionsContexts: RequestContextLens<Permissions> =
-        RequestContextKey.required<Permissions>(contexts, "permissions")
+        RequestContextKey.required(contexts, "permissions")
     val jwtTools = JwtTools(saltConfig.salt, "pupa")
     val operationHolder = OperationHolder(database, saltConfig.salt, jwtTools)
     val renderer = ContextAwarePebbleTemplates().HotReload("src/main/resources")

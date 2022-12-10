@@ -1,7 +1,10 @@
 package ru.ac.uniyar.domain.db.queries
 
 import org.ktorm.database.Database
-import org.ktorm.dsl.*
+import org.ktorm.dsl.from
+import org.ktorm.dsl.limit
+import org.ktorm.dsl.mapNotNull
+import org.ktorm.dsl.select
 import ru.ac.uniyar.domain.db.PAGE_LENGTH
 import ru.ac.uniyar.domain.db.tables.RatingTable
 import ru.ac.uniyar.domain.entities.Rating

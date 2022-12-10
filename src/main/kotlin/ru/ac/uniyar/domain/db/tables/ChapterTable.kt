@@ -1,6 +1,10 @@
 package ru.ac.uniyar.domain.db.tables
 
-import org.ktorm.schema.*
+import org.ktorm.schema.Table
+import org.ktorm.schema.boolean
+import org.ktorm.schema.datetime
+import org.ktorm.schema.int
+import org.ktorm.schema.varchar
 
 const val CHAPTER_NAME_MAX_LENGTH = 50
 

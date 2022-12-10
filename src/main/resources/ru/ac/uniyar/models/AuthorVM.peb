@@ -4,10 +4,15 @@
 {% set books = model.authorFullData.books %}
 {% set author = model.authorFullData.author %}
 {% set lastActivity = model.authorFullData.lastActivityFormatted %}
+{% set isOwner = author.login == user.login %}
 {% block title %}{{author.name}}{% endblock %}
 {% block content %}
 <a class="button" href="/authors" >К списку авторов</a>
-<h1>Карточка автора</h1>
+{%if isOwner %}
+    <h1>Моя страница</h1>
+{% else %}
+    <h1>Карточка автора</h1>
+{% endif %}
 <div class="primary callout">
     <p>Имя: {{author.name}}</p>
     {% if lastActivity is not null %}
@@ -15,7 +20,11 @@
     {% else %}
         <p>Пока не написал ни одной главы (</p>
     {% endif %}
+    {% if isOwner %}<p>Дата рождения: {{ user.birthDate }}</p>{% endif %}
 </div>
+{%if isOwner %}
+    <a href="/author/{{author.login}}/edit" class="button">Редактировать данные обо мне</a>
+{% endif %}
 {%if genres is not empty %}
 <div class="callout">
     <h3>Пишет в жанрах:</h3>

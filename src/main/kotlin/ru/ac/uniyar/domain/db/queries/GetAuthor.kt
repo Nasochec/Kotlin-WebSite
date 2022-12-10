@@ -27,6 +27,10 @@ import java.time.LocalDateTime
 class GetAuthor(
     private val database: Database
 ) {
+    companion object {
+        private val maxCreationDateAlias = max(ChapterTable.creationDate).aliased("maxCreationDate")
+    }
+
     /**Возвращает автора с заданным id или null если найти не удалось**/
     fun get(login: String): Author? =
         database
@@ -38,14 +42,6 @@ class GetAuthor(
             .firstOrNull()
 
     fun getNotNull(login: String): Author = get(login)!!
-
-//    /**Возвращает самого нового (самого позже добавленного) автора**/
-//    fun getNewest(): Author? =
-//        database
-//            .from(AuthorTable)
-//            .select()
-//            .mapNotNull(Author::fromResultSet)
-//            .lastOrNull()
 
     fun getFullData(login: String): AuthorFullData? {
         val author = get(login) ?: return null
@@ -70,8 +66,6 @@ class GetAuthor(
             .selectDistinct(GenreTable.name)
             .where { BookTable.authorLogin eq author_login }
             .mapNotNull(Genre::fromResultSet)
-
-    private val maxCreationDateAlias = max(ChapterTable.creationDate).aliased("maxCreationDate")
 
     /**Возвращает дату последней активности автора(дата последней написанной главы)**/
     private fun getAuthorLastActivity(author_login: String): LocalDateTime? = database

@@ -1,10 +1,20 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
+import org.http4k.core.Body
+import org.http4k.core.HttpHandler
+import org.http4k.core.Response
+import org.http4k.core.Status
 import org.http4k.core.cookie.Cookie
 import org.http4k.core.cookie.SameSite
 import org.http4k.core.cookie.cookie
-import org.http4k.lens.*
+import org.http4k.core.with
+import org.http4k.lens.FormField
+import org.http4k.lens.Invalid
+import org.http4k.lens.LensFailure
+import org.http4k.lens.Validator
+import org.http4k.lens.WebForm
+import org.http4k.lens.nonEmptyString
+import org.http4k.lens.webForm
 import ru.ac.uniyar.authorization.JwtTools
 import ru.ac.uniyar.domain.db.queries.CheckPassword
 import ru.ac.uniyar.domain.db.tables.AUTHOR_LOGIN_MAX_LENGTH
@@ -24,8 +34,8 @@ fun login(
     jwtTools: JwtTools
 ): HttpHandler =
     handler@{ request ->
-        val loginLens = FormField.nonEmptyString().required("login", "Логин пользователя")
-        val passwordLens = FormField.nonEmptyString().required("password", "Пароль пользователя")
+        val loginLens = FormField.nonEmptyString().required("login", "Заполните логин пользователя")
+        val passwordLens = FormField.nonEmptyString().required("password", "Заполните пароль пользователя")
         val formLens = Body.webForm(
             Validator.Feedback,
             loginLens,

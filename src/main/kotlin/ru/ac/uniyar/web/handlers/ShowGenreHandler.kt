@@ -1,6 +1,9 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
+import org.http4k.core.HttpHandler
+import org.http4k.core.Response
+import org.http4k.core.Status
+import org.http4k.core.with
 import ru.ac.uniyar.domain.db.queries.GetGenre
 import ru.ac.uniyar.models.GenreVM
 import ru.ac.uniyar.web.lens.path.genreNamePathLens

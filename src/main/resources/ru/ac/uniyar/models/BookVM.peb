@@ -1,7 +1,8 @@
 {% extends "./layout.peb" %}
-{% set book = model.bookFullData.book%}
-{% set author = model.bookFullData.author%}
-{% set chapters = model.bookFullData.chapters%}
+{% set book = model.bookFullData.book %}
+{% set author = model.bookFullData.author %}
+{% set chapters = model.bookFullData.chapters %}
+{% set isOwner = author.login == user.login %}
 {% block title %}{{book.name}}{% endblock %}
 {% block content %}
 <div>
@@ -58,59 +59,70 @@
                 <p>{{item}}</p>
             {% endfor %}
         </div>
-        <div>
-        {{ pageButtons(pager)}}
-        {% if model.isOwner and permissions.can_add_chapters %}
-            <a href="{{model.addButtonUri}}" class="button">Добавить главу</a>
-        {% endif %}
-        </div>
-        {% if permissions.can_view_chapters %}
-            {% if chapters is not empty %}
-                <h3>Главы:</h3>
-                <table>
-                    <thead>
-                    <tr>
-                        <th width="">Номер</th>
-                        <th width="150">Дата публикации</th>
-                        <th width="200">Прочтений</th>
-                        <th width="150"></th>
-                        {% if model.isOwner%}<th width="100"></th>{% endif %}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for chapter in chapters %}
-                    <tr>
-                        <td>{% if model.isOwner and not chapter.isVisible %}(Не опубликована) {%endif%}{{chapter.number}}. {{chapter.name}}</td>
-                        <td>{{chapter.creationDateFormatted}}</td>
-                        <td>{{ chapter.numberOfReads }}
-                        {%if chapter.isRead is not null%}
-                            {% if chapter.isRead %} (Прочитано) {% else %}(Не прочитано){% endif %}
-                        {%endif%}
-                        </td>
-                        <td><a href="/chapter/{{book.id}}/{{chapter.number}}">Подробнее</a></td>
-                        {% if model.isOwner%}
-                            <td>
-                                {% if not chapter.isVisible %}
-                                    <a href="/chapter/{{book.id}}/{{chapter.number}}/publish" methods="POST">Опубликовать</a>
-                                {%else%}
-                                    <a href="/chapter/{{book.id}}/{{chapter.number}}/hide">Скрыть</a>
-                                {%endif%}
-                            </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+
+        <div class="grid-x">
+            <div class="cell-x medium-4">
+                {{ pageButtons(model.pager)}}
+            </div>
+            <div class="cell-x medium-4">
+            {% if isOwner %}
+                <a href="/book/{{ book.id }}/edit" class="button">Редактировать книгу</a>
             {% else %}
+                    {% if permissions.can_change_ratings %}
+                        <a href="/book/{{ book.id }}/edit_rating" class="button">Поменять возрастной рейтинг</a>
+                    {% endif %}
+            {% endif%}
+            </div>
+            <div class="cell-x medium-4">
+            {% if isOwner and permissions.can_add_chapters %}
+                <a href="{{model.addButtonUri}}" class="button">Добавить главу</a>
+            {% endif %}
+            </div>
+        </div>
+
+        <h3>Главы:</h3>
+        {% if isOwner or permissions.can_change_ratings or (user is not null and model.bookNeededDate.isAfter(user.birthDate.atStartOfDay()))%}
+            {% if permissions.can_view_chapters %}
+                {% if chapters is not empty %}
+                    <table>
+                        <thead>
+                        <tr>
+                            <th width="">Номер</th>
+                            <th width="150">Дата публикации</th>
+                            <th width="200">Прочтений</th>
+                            {%if permissions.can_view_chapters %}<th width="150"></th>{%endif%}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for chapter in chapters %}
+                        <tr>
+                            <td>{% if isOwner and not chapter.isVisible %}(Не опубликована) {%endif%}{{chapter.number}}. {{chapter.name}}</td>
+                            <td>{{ chapter.creationDateFormatted }}</td>
+                            <td>{{ chapter.numberOfReads }}
+                            {%if chapter.isRead is not null and user is not null%}
+                                {% if chapter.isRead %} (Прочитано) {% else %}(Не прочитано){% endif %}
+                            {%endif%}
+                            </td>
+                            {%if permissions.can_view_chapters%}<td> <a href="/chapter/{{book.id}}/{{chapter.number}}">Подробнее</a></td>{%endif%}
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}{# if it's no chaptrs on this page #}
+                    <div class="callout">
+                        <p>По запросу ничего не найдено, возможно вы перешли на слишком большой номер страницы, либо в эту книгу пока не добавлено глав.</p>
+                    </div>
+                {% endif %}
+            {% else %}{# if not logged #}
                 <div class="callout">
-                    <p>По запросу ничего не найдено, возможно вы перешли на слишком большой номер страницы, либо в эту книгу пока не добавлено глав.</p>
+                    <p>Просмотр глав доступен только авторизованным пользователям.</p>
                 </div>
             {% endif %}
-        {%else%}
+        {% else %}{# if too young to see chapters #}
             <div class="callout">
-                <p>Для простотра глав требуется авторизоваться. <a href="/login">Войти</a></p>
+                <p>Чтобы просматривать главы этой книги надо быть старше {{ book.rating.neededAge }} лет.</p>
             </div>
-        {%endif%}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

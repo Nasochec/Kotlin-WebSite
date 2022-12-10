@@ -1,8 +1,25 @@
 package ru.ac.uniyar.web.handlers
 
-import org.http4k.core.*
-import org.http4k.lens.*
-import ru.ac.uniyar.domain.db.OperationHolder
+import org.http4k.core.Body
+import org.http4k.core.HttpHandler
+import org.http4k.core.Request
+import org.http4k.core.Response
+import org.http4k.core.Status
+import org.http4k.core.with
+import org.http4k.lens.BiDiLens
+import org.http4k.lens.FormField
+import org.http4k.lens.Invalid
+import org.http4k.lens.LensFailure
+import org.http4k.lens.Validator
+import org.http4k.lens.WebForm
+import org.http4k.lens.int
+import org.http4k.lens.nonEmptyString
+import org.http4k.lens.string
+import org.http4k.lens.webForm
+import ru.ac.uniyar.domain.db.queries.AddChapter
+import ru.ac.uniyar.domain.db.queries.GetBook
+import ru.ac.uniyar.domain.db.queries.GetBooks
+import ru.ac.uniyar.domain.db.queries.GetChapter
 import ru.ac.uniyar.domain.db.tables.CHAPTER_NAME_MAX_LENGTH
 import ru.ac.uniyar.domain.entities.User
 import ru.ac.uniyar.models.AddChapterVM
@@ -12,24 +29,27 @@ import ru.ac.uniyar.web.templates.ContextAwareViewRenderer
 fun showAddChapter(
     userLens: BiDiLens<Request, User?>,
     htmlView: ContextAwareViewRenderer,
-    operationHolder: OperationHolder,
+    getBooks: GetBooks,
     form: WebForm = WebForm()
 ): HttpHandler = handler@{ request ->
     val bookId = bookIdQueryLens(request)
     val user = userLens(request) ?: return@handler Response(Status.FORBIDDEN)
-    val books = operationHolder.getBooks.listAll(user.login)
+    val books = getBooks.listAll(user.login)
     Response(Status.OK).with(htmlView(request) of AddChapterVM(form, books, bookId))
 }
 
 fun addChapter(
     userLens: BiDiLens<Request, User?>,
     htmlView: ContextAwareViewRenderer,
-    operationHolder: OperationHolder
+    getBooks: GetBooks,
+    getChapter: GetChapter,
+    getBook: GetBook,
+    addChapter: AddChapter
 ): HttpHandler = handler@{ request ->
-    val bookLens = FormField.int().required("book", "id книги")
-    val nameLens = FormField.string().required("name", "Название главы")
-    val numberLens = FormField.int().required("number", "Номер главы")
-    val textLens = FormField.nonEmptyString().required("text", "Текст главы")
+    val bookLens = FormField.int().required("book", "Выберите книгу")
+    val nameLens = FormField.string().required("name", "Заполните название главы")
+    val numberLens = FormField.int().required("number", "Заполните номер главы")
+    val textLens = FormField.nonEmptyString().required("text", "Заполните текст главы")
     val formLens = Body.webForm(
         Validator.Feedback,
         bookLens,
@@ -37,6 +57,7 @@ fun addChapter(
         numberLens,
         textLens
     ).toLens()
+    val user = userLens(request) ?: return@handler Response(Status.FORBIDDEN)
     var form = formLens(request)
     try {
         if (form.errors.isEmpty()) {
@@ -56,7 +77,7 @@ fun addChapter(
                 )
                 form = form.copy(errors = newErrors)
             }
-            if (operationHolder.getBook.get(bookLens(form)) == null) {
+            if (getBook.get(bookLens(form)) == null) {
                 val newErrors = form.errors + Invalid(
                     bookLens.meta.copy(
                         description = "Выбрана некорректная книга. Либо список книг пуст, перед добавлением главы," +
@@ -65,7 +86,7 @@ fun addChapter(
                 )
                 form = form.copy(errors = newErrors)
             }
-            if (operationHolder.getChapter.get(bookLens(form), numberLens(form)) != null) {
+            if (getChapter.get(bookLens(form), numberLens(form), user.login) != null) {
                 val newErrors = form.errors + Invalid(
                     numberLens.meta.copy(
                         description = "Введён некорректный номер главы, глава с таким номером уже существует." +
@@ -76,8 +97,8 @@ fun addChapter(
                 form = form.copy(errors = newErrors)
             }
             if (form.errors.isNotEmpty())
-                return@handler showAddChapter(userLens, htmlView, operationHolder, form).invoke(request)
-            operationHolder.addChapter.insert(
+                return@handler showAddChapter(userLens, htmlView, getBooks, form).invoke(request)
+            addChapter.insert(
                 bookLens(form),
                 numberLens(form),
                 nameLens(form),
@@ -85,9 +106,9 @@ fun addChapter(
             )
             Response(Status.FOUND).header("location", "/chapter/${bookLens(form)}/${numberLens(form)}")
         } else {
-            showAddChapter(userLens, htmlView, operationHolder, form).invoke(request)
+            showAddChapter(userLens, htmlView, getBooks, form).invoke(request)
         }
     } catch (lf: LensFailure) {
-        showAddChapter(userLens, htmlView, operationHolder, form).invoke(request)
+        showAddChapter(userLens, htmlView, getBooks, form).invoke(request)
     }
 }
