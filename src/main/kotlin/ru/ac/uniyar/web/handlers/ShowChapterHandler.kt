@@ -26,10 +26,7 @@ fun showChapter(
     if (bookId == null || number == null)
         return@handler Response(Status.BAD_REQUEST)
     getChapter.getFullData(bookId, number, user.login)?.let { chapterFullData ->
-        try { // TODO
-            addChapterBookmark.add(user.login, bookId, number)
-        } catch (_: Exception) {
-        }
+        addChapterBookmark.add(user.login, bookId, number)
         val viewModel = ChapterVM(chapterFullData)
         Response(Status.OK).with(htmlView(request) of viewModel)
     } ?: Response(Status.BAD_REQUEST)

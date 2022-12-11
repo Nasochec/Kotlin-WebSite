@@ -165,9 +165,9 @@ fun app(
                     ),
             "/chapter/{bookId}/{number}" bind Method.GET
                 to permissionFilter(permissionsLens, Permissions::can_view_chapters)
-                    .then(ageCheckFilter(userLens, operationHolder.getBook))
+                    .then(ageCheckFilter(userLens, permissionsLens, operationHolder.getBook))
                     .then(showChapter(htmlView, userLens, operationHolder.getChapter, operationHolder.addChapterBookmark)),
-            "/chapter/{bookId}/{number}" bind Method.POST // TODO age filter and remove response forbidden form all handlers
+            "/chapter/{bookId}/{number}" bind Method.POST
                 to permissionFilter(permissionsLens, Permissions::can_add_chapters)
                     .then(hidePublishChapter(userLens, operationHolder.updateChapters, operationHolder.getBook)),
 
